@@ -1,0 +1,22 @@
+<ion-app>
+  <ion-router-outlet id="menuContent"></ion-router-outlet>
+
+  <ion-tabs *ngIf="authService.isAuthenticated()">
+    <ion-tab-bar slot="bottom" color="primary">
+      <ion-tab-button tab="home">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <ion-label>Orar</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="notification" *ngIf="!authService.isAdmin()">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <ion-label>Notificari</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="profile">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Profil</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-app>
