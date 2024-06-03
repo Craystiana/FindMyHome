@@ -87,6 +87,12 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
 
+        using (var scope = app.ApplicationServices.CreateScope())
+        {
+            var dbcontext = scope.ServiceProvider.GetRequiredService<FindMyHomeContext>();
+            
+            dbcontext.Database.Migrate();
+        }
         // Enable middleware to serve generated Swagger as a JSON endpoint.
         app.UseSwagger();
 

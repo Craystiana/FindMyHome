@@ -6,7 +6,7 @@ export const environment = {
   production: false
 };
 
-export const API_URL = 'https://localhost:16933/api';
+export const API_URL = 'https://localhost:7274/api';
 export const LOGIN_URL = '/user/login'; 
 export const REGISTER_URL = '/user/register';
 

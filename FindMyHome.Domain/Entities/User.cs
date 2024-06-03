@@ -18,7 +18,7 @@ public class User
     public string PasswordHash { get; set; }
     [Required]
     public string Salt { get; set; }
-    public string DeviceToken { get; set; }
+    public string? DeviceToken { get; set; }
     [Required]
     public DateTime CreatedOn { get; set; }
     [Required]
