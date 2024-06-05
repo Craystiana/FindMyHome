@@ -10,6 +10,7 @@ import { first } from 'rxjs';
 })
 export class ListingOverviewComponent {
   public listings: ListingModel[] = [];
+  public searchTerm: string = '';
 
   constructor(private listingService: ListingService) { }
 
