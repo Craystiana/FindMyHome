@@ -14,12 +14,12 @@ import { ListingData } from 'src/app/models/listing/listing-data.model';
   styleUrls: ['./listing-edit.component.scss'],
 })
 export class ListingEditComponent  implements OnInit {
-  private listingData : ListingData | undefined;
-  private isLoading: boolean = false;
-  private listingId : number | undefined;
-  private listing: ListingModel | undefined;
-  private pictureBase64 : string | undefined;
-  private isPictureLoaded = true;
+  public listingData : ListingData | undefined;
+  public isLoading: boolean = false;
+  public listingId : number = 0;
+  public listing: ListingModel | undefined;
+  public pictureBase64 : string | undefined;
+  public isPictureLoaded = true;
 
   constructor(private router: Router, private listingService : ListingService, private toastCtrl: ToastController, private route: ActivatedRoute,) { }
 
@@ -38,11 +38,11 @@ export class ListingEditComponent  implements OnInit {
       }
     });
 
-    // this.lis.getListing().pipe(take(1)).subscribe(
-    //   data => {
-    //     this.carData = data;
-    //   }
-    // );
+    this.listingService.getListingData().pipe(take(1)).subscribe(
+      data => {
+        this.listingData = data;
+      }
+    );
 
     if(this.listingId !== undefined){
       this.listingService.getListing(this.listingId).pipe(take(1)).subscribe(
@@ -108,10 +108,10 @@ export class ListingEditComponent  implements OnInit {
     }                   
   }
 
-  onDocumentUpload(files: any) {
+  onDocumentUpload($event: any) {
     const reader = new FileReader();
 
-    reader.readAsDataURL(files.item(0));
+    reader.readAsDataURL($event.target.files.item(0));
     this.isPictureLoaded = false;
 
     reader.onload = () => {

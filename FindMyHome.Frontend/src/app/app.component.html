@@ -1,22 +1,60 @@
 <ion-app>
-  <ion-router-outlet id="menuContent"></ion-router-outlet>
+  <ion-menu side="start" class="ion-text-center" contentId="menuContent">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title text-center>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
 
-  <ion-tabs *ngIf="authService.isAuthenticated()">
-    <ion-tab-bar slot="bottom" color="primary">
-      <ion-tab-button tab="home">
-        <ion-icon name="calendar-outline"></ion-icon>
-        <ion-label>Orar</ion-label>
-      </ion-tab-button>
-  
-      <ion-tab-button tab="notification" *ngIf="!authService.isAdmin()">
-        <ion-icon name="notifications-outline"></ion-icon>
-        <ion-label>Notificari</ion-label>
-      </ion-tab-button>
-  
-      <ion-tab-button tab="profile">
-        <ion-icon name="person-outline"></ion-icon>
-        <ion-label>Profil</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
+    <ion-content  *ngIf="authService.isAuthenticated()">
+      <ion-item class="ion-text-center">
+        <ion-grid>
+          <ion-row>
+            <ion-col offset-lg="3" size-lg="6">
+              <ion-chip (click)="onClick(this.fileTab.Profile)" button>
+                <ion-label>{{this.authService.currentUserName}}</ion-label>
+              </ion-chip>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-item>
+      <ion-list>
+        <ion-menu-toggle>
+          <ion-item lines="none" (click)="onClick(this.fileTab.Listings)" button>
+            <ion-label>Listings</ion-label>
+            <ion-icon name="car-sport-outline" slot="start"></ion-icon>
+          </ion-item>
+
+          <ion-item lines="none"
+                    *ngIf="authService.isAdmin()"
+                    (click)="onClick(this.fileTab.Customers)"
+                    button>
+            <ion-label>Customerss</ion-label>
+            <ion-icon name="people-outline" slot="start"></ion-icon>
+          </ion-item>
+
+          <ion-item lines="none"
+                    *ngIf="authService.isAdmin()"
+                    (click)="onClick(this.fileTab.AddAdmin)"
+                    button>
+            <ion-label>Add Admin</ion-label>
+            <ion-icon name="person-add-outline" slot="start"></ion-icon>
+          </ion-item>
+
+          <ion-item lines="none" (click)="onClick(this.fileTab.Profile)" button>
+            <ion-label>My Profile</ion-label>
+            <ion-icon name="person-outline" slot="start"></ion-icon>
+          </ion-item>
+
+          <ion-item lines="none" (click)="onLogout()" button>
+            <ion-label>Logout</ion-label>
+            <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          </ion-item>
+        </ion-menu-toggle>
+
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="menuContent" main></ion-router-outlet>
 </ion-app>

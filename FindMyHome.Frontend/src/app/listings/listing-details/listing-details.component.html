@@ -8,11 +8,11 @@
       Listing details - {{listing.listingType}}
     </ion-title>
 
-    <ion-button *ngIf="authService.isAdmin()" slot="end" color="dark" shape="round" title="Edit" (click)="editPage()">
+    <ion-button slot="end" color="dark" shape="round" title="Edit" (click)="editPage()">
       <ion-icon name="pencil-outline"></ion-icon>
     </ion-button>
 
-    <ion-button *ngIf="authService.isAdmin()" slot="end" color="danger" shape="round" title="Delete" (click)="onDelete()"> 
+    <ion-button slot="end" color="danger" shape="round" title="Delete" (click)="onDelete()"> 
       <ion-icon name="trash-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -62,4 +62,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <capacitor-google-map #map></capacitor-google-map>
+<button (click)="createMap()">Create Map</button>
 </ion-content>

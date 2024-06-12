@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { ListingModel } from 'src/app/models/listing/listing.model';
 import { ListingService } from '../listing.service';
 import { take } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { GoogleMap } from '@capacitor/google-maps';
 
 @Component({
   selector: 'app-listing-details',
@@ -14,6 +15,26 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class ListingDetailsComponent implements OnInit {
   public listing: ListingModel | undefined;
   private listingId: number | undefined;
+
+  @ViewChild('map')
+  public mapRef: ElementRef<HTMLElement> | undefined;
+  public newMap: GoogleMap | undefined;
+
+  async createMap() {
+    this.newMap = await GoogleMap.create({
+      id: 'my-cool-map',
+      element: this.mapRef?.nativeElement ?? new HTMLElement(),
+      apiKey: 'AIzaSyDsJDz05oB8BjY9q3o1yL9JQ1rj2Kvd47c',
+      config: {
+        center: {
+          lat: 33.6,
+          lng: -117.9,
+        },
+        zoom: 8,
+      },
+    });
+  }
+
 
   constructor(private route: ActivatedRoute,
               private loadingController: LoadingController,
@@ -89,7 +110,7 @@ export class ListingDetailsComponent implements OnInit {
   }
 
   editPage(){
-    this.router.navigateByUrl("/listings/edit?listingId=" + this.listingId);
+    this.router.navigateByUrl("/listing/edit?listingId=" + this.listingId);
   }
 
 }

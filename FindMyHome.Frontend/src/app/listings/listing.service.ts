@@ -4,6 +4,8 @@ import { Injectable } from "@angular/core";
 import { ListingModel } from "../models/listing/listing.model";
 import { API_URL, LOGIN_URL } from "src/environments/environment";
 import { ListingEdit } from "../models/listing/listing-edit.model";
+import { ListingData } from "../models/listing/listing-data.model";
+import { ListingQuery } from "../models/listing/listing-query.model";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class ListingService {
   constructor(private http: HttpClient) {
   }
 
-  getListings(): Observable<ListingModel[]> {
+  getListings(model: ListingQuery): Observable<ListingModel[]> {
     // return this.http.get<ListingModel[]>(API_URL + LOGIN_URL).pipe(
     //   map((listings: ListingModel[]) => {
     //     return listings;
@@ -49,5 +51,13 @@ export class ListingService {
     // )
 
     return of(true);
+  }
+
+  getListingData(): Observable<ListingData> {
+    var listingData = new ListingData();
+    listingData.listingCities = [{id: 1, name: 'Craiova'}, {id: 2, name: 'Bucuresti'}];
+    listingData.listingCounties = [{id: 1, name: 'Dolj'}, {id: 2, name: 'Ilfov'}];
+    listingData.listingTypes = [{id: 1, name: 'Apartament'}, {id: 2, name: 'Teren'}, {id: 3, name: 'Casa'}]
+    return of(listingData)
   }
 }
