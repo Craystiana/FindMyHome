@@ -2,7 +2,7 @@
   <ion-menu side="start" class="ion-text-center" contentId="menuContent">
     <ion-header>
       <ion-toolbar color="primary">
-        <ion-title text-center>Menu</ion-title>
+        <ion-title text-center>Meniu</ion-title>
       </ion-toolbar>
     </ion-header>
 
@@ -12,7 +12,7 @@
           <ion-row>
             <ion-col offset-lg="3" size-lg="6">
               <ion-chip (click)="onClick(this.fileTab.Profile)" button>
-                <ion-label>{{this.authService.currentUserName}}</ion-label>
+                <ion-label>Ana Maria</ion-label>
               </ion-chip>
             </ion-col>
           </ion-row>
@@ -22,28 +22,17 @@
       <ion-list>
         <ion-menu-toggle>
           <ion-item lines="none" (click)="onClick(this.fileTab.Listings)" button>
-            <ion-label>Listings</ion-label>
-            <ion-icon name="car-sport-outline" slot="start"></ion-icon>
+            <ion-label>Oferte</ion-label>
+            <ion-icon name="home-outline" slot="start"></ion-icon>
           </ion-item>
 
-          <ion-item lines="none"
-                    *ngIf="authService.isAdmin()"
-                    (click)="onClick(this.fileTab.Customers)"
-                    button>
-            <ion-label>Customerss</ion-label>
-            <ion-icon name="people-outline" slot="start"></ion-icon>
-          </ion-item>
-
-          <ion-item lines="none"
-                    *ngIf="authService.isAdmin()"
-                    (click)="onClick(this.fileTab.AddAdmin)"
-                    button>
-            <ion-label>Add Admin</ion-label>
-            <ion-icon name="person-add-outline" slot="start"></ion-icon>
+          <ion-item lines="none" (click)="onClick(this.fileTab.FavouriteListings)" button>
+            <ion-label>Favorite</ion-label>
+            <ion-icon name="star-outline" slot="start"></ion-icon>
           </ion-item>
 
           <ion-item lines="none" (click)="onClick(this.fileTab.Profile)" button>
-            <ion-label>My Profile</ion-label>
+            <ion-label>Profilul meu</ion-label>
             <ion-icon name="person-outline" slot="start"></ion-icon>
           </ion-item>
 

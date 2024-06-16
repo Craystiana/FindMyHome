@@ -24,19 +24,19 @@
 
             <ion-card-content>
               <ion-item class="item-content" color="none">
-                <ion-label position="floating">Prenume</ion-label>
+                <ion-label position="floating">Nume</ion-label>
                 <ion-input type="firstName" ngModel name="firstName" required #firstNameCtrl="ngModel"></ion-input>
               </ion-item>
               <ion-item *ngIf="firstNameCtrl.touched && !firstNameCtrl.valid" lines="none" color="none">
-                <ion-label text-wrap color="danger">Prenume invalid!</ion-label>
+                <ion-label text-wrap color="danger">Nume invalid!</ion-label>
               </ion-item>
 
               <ion-item class="item-content" color="none">
-                <ion-label position="floating">Nume</ion-label>
+                <ion-label position="floating">Prenume</ion-label>
                 <ion-input type="lastName" ngModel name="lastName" required #lastNameCtrl="ngModel"></ion-input>
               </ion-item>
               <ion-item *ngIf="lastNameCtrl.touched && !lastNameCtrl.valid" lines="none" color="none">
-                <ion-label text-wrap color="danger">Nume invalid!</ion-label>
+                <ion-label text-wrap color="danger">Prenume invalid!</ion-label>
               </ion-item>
 
               <ion-item class="item-content" color="none">
@@ -45,6 +45,14 @@
               </ion-item>
               <ion-item *ngIf="emailAddressCtrl.touched && !emailAddressCtrl.valid" lines="none" color="none">
                 <ion-label text-wrap color="danger">Adresa de email invalidă!</ion-label>
+              </ion-item>
+
+              <ion-item class="item-content" color="none">
+                <ion-label position="floating">Numar telefon</ion-label>
+                <ion-input type="phoneNumber" ngModel name="phoneNumber" required #phoneNumberCtrl="ngModel"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="phoneNumberCtrl.touched && !phoneNumberCtrl.valid" lines="none" color="none">
+                <ion-label text-wrap color="danger">Numar de telefon invalid!</ion-label>
               </ion-item>
 
               <ion-item color="none">

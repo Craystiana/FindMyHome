@@ -11,7 +11,11 @@ import { ListingQuery } from "../models/listing/listing-query.model";
   providedIn: 'root'
 })
 export class ListingService {
-    listings: ListingModel[] = [{listingId: 1, listingType: "apartment", description: "description", title: "apartament de vanzare", location: "location", county: "Dolj", city: "Craiova", price: 1934329, picture: new Blob()}];
+  listings: ListingModel[] = [{listingId: 1, listingType: "casa", listingMarketingType: 'vanzare', description: "Casa de 300mp cu teren de 500mp", title: "Casa de vanzare", location: "Str. Vantului, Nr. 2", county: "Dolj", city: "Craiova", price: 1934329, picture: 'https://images.adsttc.com/media/images/63a0/5173/a452/0802/91ad/5440/slideshow/cuas-house-3fconcept_6.jpg?1671451021', latitude: 44.439663, longitude: 26.096306},
+  {listingId: 2, listingType: "apartment", listingMarketingType: 'vanzare', description: "Apartament de doua camere, 60mp", title: "Apartament de vanzare", location: "Str. Agriculturii, Nr. 3", county: "Dolj", city: "Craiova", price: 232844638, picture: 'https://www.apartments.com/blog/sites/default/files/styles/x_large/public/image/2023-06/ParkLine-apartment-in-Miami-FL.jpg.webp?itok=lYDRCGzC', latitude: 44.439663, longitude: 26.096306},
+  {listingId: 3, listingType: "teren", listingMarketingType: 'vanzare', description: "Teren de 600mp cu deschidere de 20mp", title: "Teren de vanzare", location: "Str. Nufarului, Nr. 4", county: "Dolj", city: "Craiova", price: 32432523, picture: 'https://imobiliaregreen.ro/wp-content/uploads/2017/08/146759169_1_644x461_ocazie-teren-intravilan-in-chinteni-pentru-constructie-de-case-cluj-napoca_rev002-614x323-1.jpg', latitude: 44.439663, longitude: 26.096306}
+  ];
+  
   constructor(private http: HttpClient) {
   }
 
@@ -21,6 +25,10 @@ export class ListingService {
     //     return listings;
     //   })
     // );
+    return of<ListingModel[]>(this.listings);
+  }
+
+  getFavouriteListings(): Observable<ListingModel[]>{
     return of<ListingModel[]>(this.listings);
   }
 
@@ -57,7 +65,8 @@ export class ListingService {
     var listingData = new ListingData();
     listingData.listingCities = [{id: 1, name: 'Craiova'}, {id: 2, name: 'Bucuresti'}];
     listingData.listingCounties = [{id: 1, name: 'Dolj'}, {id: 2, name: 'Ilfov'}];
-    listingData.listingTypes = [{id: 1, name: 'Apartament'}, {id: 2, name: 'Teren'}, {id: 3, name: 'Casa'}]
+    listingData.listingTypes = [{id: 1, name: 'Apartament'}, {id: 2, name: 'Teren'}, {id: 3, name: 'Casa'}];
+    listingData.listingMarketingTypes = [{id: 1, name: 'De vanzare'}, {id: 2, name: 'De inchiriere'}];
     return of(listingData)
   }
 }

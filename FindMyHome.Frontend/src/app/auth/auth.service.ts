@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject, Observable, map } from "rxjs";
+import { BehaviorSubject, Observable, map, of } from "rxjs";
 import { UserModel } from "../models/user/user.model";
 import { UserRole } from "../common/user-role";
 import { RegisterModel } from "../models/user/register.model";
@@ -85,5 +85,24 @@ export class AuthService {
         return result;
       })
     );
+  }
+
+  public getProfile(){
+    // return this.http.get(API_URL + PROFILE_URL).pipe(
+    //   map((data : RegisterModel) => {
+    //     return data;
+    //   })
+    // );
+
+    return of(new RegisterModel('Ana', 'Maria', 'ana.maria@gmail.com', 'password', 5736282947));
+  }
+
+  editProfile(model: RegisterModel){
+    // return this.http.post(API_URL + PROFILE_URL, model).pipe(
+    //   map((result: boolean) =>{
+    //     return result;
+    //   })
+    // );
+    return of(true);
   }
 }

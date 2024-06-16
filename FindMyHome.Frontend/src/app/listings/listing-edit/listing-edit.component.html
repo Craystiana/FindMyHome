@@ -3,80 +3,87 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/listing"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{listingId > 0 ? 'Edit' : 'Add'}}</ion-title>
+    <ion-title>{{listingId > 0 ? 'Editare' : 'Adaugare'}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
   <form #editForm="ngForm" (ngSubmit)="onEdit(editForm)" style="height: 100%;">
-    <ion-grid style="height: inherit;" *ngIf="this.listing !== undefined">
+    <ion-grid style="height: inherit;">
       <ion-row class="ion-align-items-center" style="height: 100%;">
         <ion-col offset-sm="3" size-sm="6">
           <ion-card *ngIf="this.listingData !== undefined">
             <ion-card-header class="ion-text-center">
               <ion-card-title>
-                <ion-icon name="flash-sharp" color="warning"></ion-icon>
-                {{listingId > 0 ? 'Edit listing' : 'Add a listing'}}
-                <ion-icon name="flash-sharp" color="warning"></ion-icon>
+                <ion-icon name="home-sharp" color="primary"></ion-icon>
+                {{listingId > 0 ? 'Editare oferta' : 'Adaugare oferta'}}
+                <ion-icon name="home-sharp" color="primary"></ion-icon>
               </ion-card-title>
             </ion-card-header>
 
             <ion-card-content>
             <ion-item class="item-content">
-              <ion-label position="floating">Listing Title</ion-label>
-              <ion-input type="text" [ngModel]="this.listing.title" name="title" required #nameCtrl="ngModel"></ion-input>
+              <ion-label position="floating">Titlu oferta</ion-label>
+              <ion-input type="text" [ngModel]="this.listing?.title" name="title" required #nameCtrl="ngModel"></ion-input>
             </ion-item>
             <ion-item *ngIf="nameCtrl.touched && !nameCtrl.valid" lines="none">
-              <ion-label color="danger">Please input the title of the listing</ion-label>
+              <ion-label color="danger">Titlu oferta este un camp obligatoriu</ion-label>
             </ion-item>
 
             <ion-item>
-              <ion-label position="floating">Listing Type</ion-label>
-              <ion-select [ngModel]="this.listing.listingType" required name="listingType" mode="ios">
+              <ion-label position="floating">Tip oferta</ion-label>
+              <ion-select [ngModel]="this.listing?.listingType" required name="listingType" mode="ios">
                 <ion-select-option *ngFor="let listingType of listingData.listingTypes" [value]="listingType.id">{{listingType.name}}</ion-select-option>
               </ion-select>
             </ion-item>
 
             <ion-item>
-              <ion-label position="floating">Listing County</ion-label>
-              <ion-select [ngModel]="this.listing.county" required name="county" mode="ios">
+              <ion-label position="floating">Tip marketing oferta</ion-label>
+              <ion-select [ngModel]="this.listing?.listingMarketingType" required name="listingMarketingType" mode="ios">
+                <ion-select-option *ngFor="let listingMarketingType of listingData.listingMarketingTypes" [value]="listingMarketingType.id">{{listingMarketingType.name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Judet oferta</ion-label>
+              <ion-select [ngModel]="this.listing?.county" required name="county" mode="ios">
                 <ion-select-option *ngFor="let listingCounty of listingData.listingCounties" [value]="listingCounty.id">{{listingCounty.name}}</ion-select-option>
               </ion-select>
             </ion-item>
 
             <ion-item>
-              <ion-label position="floating">Listing City</ion-label>
-              <ion-select [ngModel]="this.listing.city" required name="city" mode="ios">
+              <ion-label position="floating">Oras oferta</ion-label>
+              <ion-select [ngModel]="this.listing?.city" required name="city" mode="ios">
                 <ion-select-option *ngFor="let listingCity of listingData.listingCities" [value]="listingCity.id">{{listingCity.name}}</ion-select-option>
               </ion-select>
             </ion-item>
 
             <ion-item class="item-content">
-              <ion-label position="floating">Description</ion-label>
-              <ion-input type="text" [ngModel]="this.listing.description" name="description" required #descriptionCtrl="ngModel"></ion-input>
+              <ion-label position="floating">Descriere</ion-label>
+              <ion-input type="text" [ngModel]="this.listing?.description" name="description" required #descriptionCtrl="ngModel"></ion-input>
             </ion-item>
             <ion-item *ngIf="descriptionCtrl.touched && !descriptionCtrl.valid" lines="none">
               <ion-label color="danger">Please input the description of the listing</ion-label>
             </ion-item>
 
             <ion-item class="item-content">
-              <ion-label position="floating">Location</ion-label>
-              <ion-input type="text" [ngModel]="this.listing.location" name="description" required #locationCtrl="ngModel"></ion-input>
+              <ion-label position="floating">Locatie</ion-label>
+              <ion-input type="text" [ngModel]="this.listing?.location" name="description" required #locationCtrl="ngModel"></ion-input>
             </ion-item>
             <ion-item *ngIf="locationCtrl.touched && !locationCtrl.valid" lines="none">
               <ion-label color="danger">Please input the location of the listing</ion-label>
             </ion-item>
 
             <ion-item class="item-content">
-              <ion-label position="floating">Price</ion-label>
-              <ion-input type="number" [ngModel]="this.listing.price" name="price" required #priceCtrl="ngModel"></ion-input>
+              <ion-label position="floating">Pret</ion-label>
+              <ion-input type="number" [ngModel]="this.listing?.price" name="price" required #priceCtrl="ngModel"></ion-input>
             </ion-item>
             <ion-item *ngIf="priceCtrl.touched && !priceCtrl.valid" lines="none">
               <ion-label color="danger">Please enter the price of the listing</ion-label>
             </ion-item>
 
             <ion-item class="item-content">
-              <ion-label position="stacked">Photo</ion-label>
+              <ion-label position="stacked">Imagine</ion-label>
               <ion-input type="file" ngModel name="photo" (change)="onDocumentUpload($event)"></ion-input>
             </ion-item>
 
@@ -89,4 +96,5 @@
       </ion-row>
     </ion-grid>
   </form>
+  <capacitor-google-map #map></capacitor-google-map>
 </ion-content>

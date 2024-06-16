@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingModel } from 'src/app/models/listing/listing.model';
 import { ListingService } from '../listing.service';
@@ -7,6 +7,7 @@ import { first, take } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { ListingEdit } from 'src/app/models/listing/listing-edit.model';
 import { ListingData } from 'src/app/models/listing/listing-data.model';
+import { GoogleMap } from '@capacitor/google-maps';
 
 @Component({
   selector: 'app-listing-edit',
@@ -20,15 +21,23 @@ export class ListingEditComponent  implements OnInit {
   public listing: ListingModel | undefined;
   public pictureBase64 : string | undefined;
   public isPictureLoaded = true;
+  @ViewChild('map')
+  public mapRef: ElementRef<HTMLElement> | undefined;
+  public newMap: GoogleMap | undefined;
+  public latitude: number = 44.439663;
+  public longitude: number = 26.096306;
+  public markerId: string | undefined;
 
-  constructor(private router: Router, private listingService : ListingService, private toastCtrl: ToastController, private route: ActivatedRoute,) { }
+  constructor(private router: Router, private listingService : ListingService, private toastCtrl: ToastController, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.loadData();
+    this.createMap();
   }
 
   ionViewWillEnter(){
     this.loadData();
+    this.createMap();
   }
 
   loadData(){
@@ -44,10 +53,12 @@ export class ListingEditComponent  implements OnInit {
       }
     );
 
-    if(this.listingId !== undefined){
+    if(this.listingId !== 0){
       this.listingService.getListing(this.listingId).pipe(take(1)).subscribe(
         data => {
           this.listing = data;
+          this.latitude = data.latitude;
+          this.longitude = data.longitude;
         }
       );
     }
@@ -63,7 +74,9 @@ export class ListingEditComponent  implements OnInit {
                               editForm.value.licensePlate,
                               editForm.value.odometer,
                               editForm.value.price,
-                              this.pictureBase64);               
+                              this.pictureBase64,
+                              this.latitude,
+                              this.longitude);               
       
       this.listingService.edit(model).pipe(first()).subscribe(
         data =>{
@@ -118,6 +131,51 @@ export class ListingEditComponent  implements OnInit {
       this.pictureBase64 = reader.result?.toString().split('base64,').pop();
       this.isPictureLoaded = true;
     }
+  }
+
+  async createMap() {
+    this.newMap = await GoogleMap.create({
+      id: 'edit-map',
+      element: this.mapRef?.nativeElement ?? new HTMLElement(),
+      apiKey: 'AIzaSyDsJDz05oB8BjY9q3o1yL9JQ1rj2Kvd47c',
+      config: {
+        center: {
+          lat: this.latitude,
+          lng: this.longitude,
+        },
+        zoom: 10,
+      },
+    });
+
+    if (this.latitude && this.longitude) {
+      this.markerId = await this.setMarker(this.latitude, this.longitude);
+    }
+
+    this.newMap.setOnMapClickListener(async event => {
+      if (this.markerId) {
+        this.newMap?.removeMarker(this.markerId);
+      }
+      this.markerId = await this.setMarker(event.latitude, event.longitude);
+      
+    })
+  }
+
+  private async setMarker(latitude: number, longitude: number): Promise<string | undefined> {
+    const markerId = await this.newMap?.addMarker({
+      coordinate: {
+        lat: latitude,
+        lng: longitude
+      }
+    });
+
+    await this.newMap?.setCamera({
+      coordinate: {
+        lat: latitude,
+        lng: latitude
+      }
+    });
+
+    return markerId;
   }
 
 }

@@ -3,7 +3,7 @@
     <ion-grid class="ion-no-padding">
       <ion-row>
         <ion-col size-lg="2" size-sm="0">
-          <ion-title style="height: 100%;">Listings</ion-title>
+          <ion-title style="height: 100%;">Oferte</ion-title>
         </ion-col>
         
         <ion-col offset-lg="2" size-lg="4" size-sm="1">
@@ -11,7 +11,7 @@
                          debounce="500"
                          animated
                          color="dark"
-                         placeholder="Search listings"
+                         placeholder="Cauta oferte"
                          style="padding: inherit;"
                          [(ngModel)]="searchTerm"
                          (ionChange)="getListings()"></ion-searchbar>
@@ -32,7 +32,7 @@
 
 <ion-content *ngIf="listings !== undefined">
   <ion-toolbar>
-    <ion-select placeholder="Type"
+    <ion-select placeholder="Tip"
                 okText="Save"
                 cancelText="Clear"
                 slot="start"
@@ -45,7 +45,20 @@
       <ion-select-option *ngFor="let listingType of listingData.listingTypes" [value]="listingType.id">{{listingType.name}}</ion-select-option>
     </ion-select>
 
-    <ion-select placeholder="County"
+    <ion-select placeholder="Oferta"
+                okText="Save"
+                cancelText="Clear"
+                slot="start"
+                multiple
+                class="ion-padding"
+                mode="ios"
+                name="Marketing Type"
+                [(ngModel)]="listingMarketingType"
+                (ionChange)="getListings()">
+      <ion-select-option *ngFor="let listingMarketingType of listingData.listingMarketingTypes" [value]="listingMarketingType.id">{{listingMarketingType.name}}</ion-select-option>
+    </ion-select>
+
+    <ion-select placeholder="Judet"
                 okText="Save"
                 cancelText="Clear"
                 slot="start"
@@ -57,7 +70,7 @@
       <ion-select-option *ngFor="let listingCounty of listingData.listingCounties" [value]="listingCounty.id">{{listingCounty.name}}</ion-select-option>
     </ion-select>
 
-    <ion-select placeholder="City" 
+    <ion-select placeholder="Oras" 
                 okText="Save" 
                 cancelText="Clear" 
                 slot="start" 
@@ -69,7 +82,7 @@
       <ion-select-option *ngFor="let listingCity of listingData.listingCities" [value]="listingCity.id">{{listingCity.name}}</ion-select-option>
     </ion-select>
 
-    <ion-select placeholder="Sort By"
+    <ion-select placeholder="Sortare"
                 okText="Save"
                 cancelText="Clear"
                 slot="end"
@@ -89,8 +102,8 @@
                *ngFor="let listing of listings">
         <ion-card [routerLink]="['/listing/detail']" [queryParams]="{listingId : listing.listingId}">
           <img [src]="listing.picture !== null ?
-           'data:image/jpg;base64,' + listing.picture :
-           'https://www.zastavki.com/pictures/originals/2020Auto___Honda_Yellow_car_Honda_NSX_on_a_black_background_138992_.jpg'"
+           listing.picture : 
+           'https://images.adsttc.com/media/images/63a0/5173/a452/0802/91ad/5440/slideshow/cuas-house-3fconcept_6.jpg?1671451021'"
           style="width: 100%; height: 200px;"/>
           <ion-card-header class="ion-text-center">
             <ion-card-subtitle>{{listing.listingType}}</ion-card-subtitle>
@@ -99,13 +112,17 @@
       
           <ion-card-content>
             <ion-item lines="none" color="transparent">
-              <ion-icon name="car-sport-outline" slot="start" color="warning"></ion-icon>
+              <ion-icon name="home-outline" slot="start" color="primary"></ion-icon>
               <ion-label>{{listing.description}}</ion-label>
             </ion-item>
       
             <ion-item lines="none">
               <ion-icon name="cash-outline" slot="start" color="success"></ion-icon> 
               <ion-label>{{listing.price}} RON</ion-label>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-icon name="star-outline" slot="end" color="warning"></ion-icon>
             </ion-item>
           </ion-card-content>
         </ion-card>

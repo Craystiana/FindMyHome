@@ -23,7 +23,8 @@ export class RegisterPage {
     var model = new RegisterModel(registerForm.value.firstName,
                                   registerForm.value.lastName,
                                   registerForm.value.email,
-                                  registerForm.value.password);
+                                  registerForm.value.password,
+                                  registerForm.value.phoneNumber);
 
     this.authService.register(model).pipe(first()).subscribe(
       data => {

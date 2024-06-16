@@ -6,4 +6,5 @@ export interface UserModel {
     lastName: string;
     userRole: UserRole;
     token: string;
+    phoneNumber: number;
 }

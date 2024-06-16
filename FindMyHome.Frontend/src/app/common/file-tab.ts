@@ -3,5 +3,6 @@ export enum FileTab{
     Customers = 2,
     AddAdmin = 3,
     Profile = 4,
-    Listings = 5
+    Listings = 5,
+    FavouriteListings = 6
 }

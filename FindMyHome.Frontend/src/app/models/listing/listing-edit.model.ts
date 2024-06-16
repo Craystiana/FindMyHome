@@ -7,6 +7,8 @@ export class ListingEdit{
     public description : string;
     public price : number;
     public picture : string | undefined;
+    public latitude: number = 44.439663;
+    public longitude: number = 26.096306;
 
     public constructor(carId: number,
                        carType: number, 
@@ -15,7 +17,9 @@ export class ListingEdit{
                        title : string, 
                        description : string,
                        price : number, 
-                       photo : string | undefined) {
+                       photo : string | undefined,
+                       latitude: number,
+                       longitude: number) {
         this.listingId = carId;                   
         this.type = carType;
         this.countyId = countyId;
@@ -24,5 +28,7 @@ export class ListingEdit{
         this.description = description;
         this.price = price;
         this.picture = photo;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

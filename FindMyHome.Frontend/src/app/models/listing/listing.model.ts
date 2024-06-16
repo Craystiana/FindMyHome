@@ -4,8 +4,11 @@ export interface ListingModel {
     description: string;
     location: string;
     listingType: string;
+    listingMarketingType: string;
     county: string;
     city: string;
     price: number;
-    picture: Blob;
+    picture: Blob | string | null;
+    latitude: number;
+    longitude: number;
 }

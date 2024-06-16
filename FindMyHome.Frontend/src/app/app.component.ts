@@ -69,6 +69,10 @@ export class AppComponent {
       case FileTab.Listings:
         this.router.navigateByUrl('/listing');
         break;  
+
+      case FileTab.FavouriteListings:
+        this.router.navigateByUrl('/listing/favourites');
+        break;
     }
   }
 

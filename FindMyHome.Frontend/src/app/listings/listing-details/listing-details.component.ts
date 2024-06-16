@@ -33,7 +33,24 @@ export class ListingDetailsComponent implements OnInit {
         zoom: 8,
       },
     });
+
+      // Add a marker to the map
+    await this.newMap.addMarker({
+      coordinate: {
+        lat: 33.6,
+        lng: -117.9
+      }
+    });
+
+    // Move the map programmatically
+    await this.newMap.setCamera({
+      coordinate: {
+        lat: 33.6,
+        lng: -117.9
+      }
+    });
   }
+
 
 
   constructor(private route: ActivatedRoute,
@@ -71,6 +88,8 @@ export class ListingDetailsComponent implements OnInit {
         loading.dismiss();
       })
     }
+
+    this.createMap();
   }
 
   onDelete(){

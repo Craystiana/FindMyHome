@@ -19,6 +19,7 @@ export class ListingOverviewComponent implements OnInit {
   public listingType: number[] = [];
   public listingCounty: number[] = [];
   public listingCity: number[] = [];
+  public listingMarketingType: number[] = [];
   public sortBy: number = 0;
   public listingData: ListingData = new ListingData();
 
@@ -53,6 +54,7 @@ export class ListingOverviewComponent implements OnInit {
     var model = new ListingQuery(this.listingType,
                              this.listingCounty,
                              this.listingCity,
+                             this.listingMarketingType,
                              this.sortBy,
                              this.searchTerm);
 

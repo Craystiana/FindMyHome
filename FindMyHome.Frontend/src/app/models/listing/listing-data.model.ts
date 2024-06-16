@@ -4,4 +4,5 @@ export class ListingData{
     public listingTypes : Generic[] = [];
     public listingCounties : Generic[] = [];
     public listingCities : Generic[] = [];
+    public listingMarketingTypes: Generic[] = [];
 }
