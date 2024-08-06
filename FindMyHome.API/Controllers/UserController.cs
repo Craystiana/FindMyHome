@@ -1,8 +1,7 @@
-﻿using FindMyHome.BusinessLogic.Services;
+﻿using System.Net;
+using FindMyHome.BusinessLogic.Services;
 using FindMyHome.Domain.DTO.User;
 using Microsoft.AspNetCore.Mvc;
-using Schedent.API.Controllers;
-using System.Net;
 
 namespace FindMyHome.API.Controllers;
 
