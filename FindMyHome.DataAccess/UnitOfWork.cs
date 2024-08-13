@@ -17,7 +17,8 @@ public class UnitOfWork : IUnitOfWork
     private IRepository<County> _countyRepository;
     private IRepository<City> _cityRepository;
     private IRepository<ListingType> _listingTypeRepository;
-    private IRepository<Listing> _listingRepository;
+    private IRepository<ListingMarketingType> _listingMarketingTypeRepository;
+    private IListingRepository _listingRepository;
 
     public UnitOfWork(string connectionString)
     {
@@ -31,7 +32,8 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<County> CountyRepository => _countyRepository ??= new Repository<County>(_context);
     public IRepository<City> CityRepository => _cityRepository ??= new Repository<City>(_context);
     public IRepository<ListingType> ListingTypeRepository => _listingTypeRepository ??= new Repository<ListingType>(_context);
-    public IRepository<Listing> ListingRepository => _listingRepository ??= new Repository<Listing>(_context);
+    public IRepository<ListingMarketingType> ListingMarketingTypeRepository => _listingMarketingTypeRepository ??= new Repository<ListingMarketingType>(_context);
+    public IListingRepository ListingRepository => _listingRepository ??= new ListingRepository(_context);
     public IRepository<UserRole> UserRoleRepository => _userRoleRepository ??= new Repository<UserRole>(_context);
 
     protected virtual void Dispose(bool disposing)

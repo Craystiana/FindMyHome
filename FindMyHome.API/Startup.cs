@@ -52,7 +52,8 @@ public class Startup
         services.AddScoped<IRepository<County>, Repository<County>>();
         services.AddScoped<IRepository<City>, Repository<City>>();
         services.AddScoped<IRepository<ListingType>, Repository<ListingType>>();
-        services.AddScoped<IRepository<Listing>, Repository<Listing>>();
+        services.AddScoped<IRepository<ListingMarketingType>, Repository<ListingMarketingType>>();
+        services.AddScoped<IRepository<Listing>, ListingRepository>();
 
         // Services
         services.AddScoped<UserService>();

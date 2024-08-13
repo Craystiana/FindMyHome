@@ -11,6 +11,7 @@ public class FindMyHomeContext : DbContext
     public virtual DbSet<County> Counties { get; set; }
     public virtual DbSet<City> Cities { get; set; }
     public virtual DbSet<ListingType> ListingTypes {  get; set; }
+    public virtual DbSet<ListingMarketingType> ListingMarketTypes { get; set; }
     public virtual DbSet<Listing> Listings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

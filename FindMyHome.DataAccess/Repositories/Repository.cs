@@ -17,11 +17,6 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         return _context.Set<TEntity>().Find(id);
     }
 
-    public TEntity Get(Guid guid)
-    {
-        return _context.Set<TEntity>().Find(guid);
-    }
-
     public IEnumerable<TEntity> GetAll()
     {
         return _context.Set<TEntity>().ToList();

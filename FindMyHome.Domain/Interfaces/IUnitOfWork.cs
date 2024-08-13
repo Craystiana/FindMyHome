@@ -10,7 +10,8 @@ public interface IUnitOfWork : IDisposable
     IRepository<County> CountyRepository { get; }
     IRepository<City> CityRepository { get; }
     IRepository<ListingType> ListingTypeRepository { get; }
-    IRepository<Listing> ListingRepository { get; }
+    IRepository<ListingMarketingType> ListingMarketingTypeRepository { get; }
+    IListingRepository ListingRepository { get; }
 
 
     int SaveChanges();
