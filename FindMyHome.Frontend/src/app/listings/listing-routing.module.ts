@@ -16,8 +16,12 @@ const routes: Routes = [
     loadChildren: () => import('./listing-edit/listing-edit.module').then( m => m.ListingEditModule)
   },
   {
-    path: 'favourites',
+    path: 'favorites',
     loadChildren: () => import('./listing-favourites/listing-favourites.module').then(m => m.ListingFavouritesModule)
+  },
+  {
+    path: 'own',
+    loadChildren: () => import('./user-listings/user-listings.module').then(m => m.UserListingsModule)
   }
 ];
 

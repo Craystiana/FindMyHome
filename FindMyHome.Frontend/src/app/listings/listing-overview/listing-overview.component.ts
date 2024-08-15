@@ -52,9 +52,9 @@ export class ListingOverviewComponent implements OnInit {
     this.isLoading = true;
 
     var model = new ListingQuery(this.listingType,
-                             this.listingCounty,
-                             this.listingCity,
                              this.listingMarketingType,
+                             this.listingCity,
+                             this.listingCounty,
                              this.sortBy,
                              this.searchTerm);
 

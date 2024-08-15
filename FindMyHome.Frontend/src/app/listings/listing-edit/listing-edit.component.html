@@ -47,14 +47,14 @@
             <ion-item>
               <ion-label position="floating">Judet oferta</ion-label>
               <ion-select [ngModel]="this.listing?.county" required name="county" mode="ios">
-                <ion-select-option *ngFor="let listingCounty of listingData.listingCounties" [value]="listingCounty.id">{{listingCounty.name}}</ion-select-option>
+                <ion-select-option *ngFor="let listingCounty of listingData.counties" [value]="listingCounty.id">{{listingCounty.name}}</ion-select-option>
               </ion-select>
             </ion-item>
 
             <ion-item>
               <ion-label position="floating">Oras oferta</ion-label>
               <ion-select [ngModel]="this.listing?.city" required name="city" mode="ios">
-                <ion-select-option *ngFor="let listingCity of listingData.listingCities" [value]="listingCity.id">{{listingCity.name}}</ion-select-option>
+                <ion-select-option *ngFor="let listingCity of listingData.cities" [value]="listingCity.id">{{listingCity.name}}</ion-select-option>
               </ion-select>
             </ion-item>
 
@@ -68,7 +68,7 @@
 
             <ion-item class="item-content">
               <ion-label position="floating">Locatie</ion-label>
-              <ion-input type="text" [ngModel]="this.listing?.location" name="description" required #locationCtrl="ngModel"></ion-input>
+              <ion-input type="text" [ngModel]="this.listing?.location" name="location" required #locationCtrl="ngModel"></ion-input>
             </ion-item>
             <ion-item *ngIf="locationCtrl.touched && !locationCtrl.valid" lines="none">
               <ion-label color="danger">Please input the location of the listing</ion-label>

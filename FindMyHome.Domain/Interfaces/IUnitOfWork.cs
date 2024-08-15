@@ -11,6 +11,7 @@ public interface IUnitOfWork : IDisposable
     IRepository<City> CityRepository { get; }
     IRepository<ListingType> ListingTypeRepository { get; }
     IRepository<ListingMarketingType> ListingMarketingTypeRepository { get; }
+    IUserListingFavoriteRepository UserListingFavoriteRepository { get; }
     IListingRepository ListingRepository { get; }
 
 

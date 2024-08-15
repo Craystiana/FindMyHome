@@ -17,13 +17,13 @@ export class AuthPage {
   
   constructor(private authService: AuthService, private router: Router, private toastCtrl: ToastController) {
     if(this.authService.isAuthenticated()){
-      router.navigateByUrl('/home');
+      router.navigateByUrl('/listing');
     }
   }
 
   ionViewWillEnter(){
     if(this.authService.isAuthenticated()){
-      this.router.navigateByUrl('/home');
+      this.router.navigateByUrl('/listing');
     }
   }
 
@@ -35,7 +35,7 @@ export class AuthPage {
       .subscribe(
         data => {
           if(this.authService.isAuthenticated()){
-            this.router.navigateByUrl("/home");
+            this.router.navigateByUrl("/listing");
           }
           this.isLoading = false;
           loginForm.resetForm();

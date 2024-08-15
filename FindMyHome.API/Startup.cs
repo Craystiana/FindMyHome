@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 
 namespace FindMyHome.API;
 
@@ -54,9 +53,12 @@ public class Startup
         services.AddScoped<IRepository<ListingType>, Repository<ListingType>>();
         services.AddScoped<IRepository<ListingMarketingType>, Repository<ListingMarketingType>>();
         services.AddScoped<IRepository<Listing>, ListingRepository>();
+        services.AddScoped<IRepository<UserListingFavorite>, UserListingFavoriteRepository>();
 
         // Services
         services.AddScoped<UserService>();
+        services.AddScoped<ListingService>();
+        services.AddScoped<FavoriteService>();
 
         // JWT authentication
         services.AddAuthentication(options =>

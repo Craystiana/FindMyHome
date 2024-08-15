@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, map, of } from "rxjs";
 import { UserModel } from "../models/user/user.model";
 import { UserRole } from "../common/user-role";
 import { RegisterModel } from "../models/user/register.model";
-import { API_URL, LOGIN_URL, REGISTER_URL } from "src/environments/environment";
+import { API_URL, LOGIN_URL, PROFILE_URL, REGISTER_URL } from "src/environments/environment";
 import { Injectable } from "@angular/core";
 
 @Injectable({
@@ -44,8 +44,7 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    //return this.currentUserSubject.value != null;
-    return true;
+    return this.currentUserSubject.value != null;
   }
 
   public isAdmin(): boolean {
@@ -87,22 +86,19 @@ export class AuthService {
     );
   }
 
-  public getProfile(){
-    // return this.http.get(API_URL + PROFILE_URL).pipe(
-    //   map((data : RegisterModel) => {
-    //     return data;
-    //   })
-    // );
-
-    return of(new RegisterModel('Ana', 'Maria', 'ana.maria@gmail.com', 'password', 5736282947));
+  getProfile() {
+    return this.http.get<RegisterModel>(API_URL + PROFILE_URL).pipe(
+      map((data: RegisterModel) => {
+        return data;
+      })
+    );
   }
 
   editProfile(model: RegisterModel){
-    // return this.http.post(API_URL + PROFILE_URL, model).pipe(
-    //   map((result: boolean) =>{
-    //     return result;
-    //   })
-    // );
-    return of(true);
+    return this.http.post<boolean>(API_URL + PROFILE_URL, model).pipe(
+      map((result: boolean) =>{
+        return result;
+      })
+    );
   }
 }

@@ -64,7 +64,7 @@ public class UserController : BaseController
     }
 
     [HttpGet]
-    [Route("Details")]
+    [Route("Profile")]
     public IActionResult GetUserDetails()
     {
         try

@@ -19,6 +19,7 @@ public class UnitOfWork : IUnitOfWork
     private IRepository<ListingType> _listingTypeRepository;
     private IRepository<ListingMarketingType> _listingMarketingTypeRepository;
     private IListingRepository _listingRepository;
+    private IUserListingFavoriteRepository _userListingFavoriteRepository;
 
     public UnitOfWork(string connectionString)
     {
@@ -35,6 +36,7 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<ListingMarketingType> ListingMarketingTypeRepository => _listingMarketingTypeRepository ??= new Repository<ListingMarketingType>(_context);
     public IListingRepository ListingRepository => _listingRepository ??= new ListingRepository(_context);
     public IRepository<UserRole> UserRoleRepository => _userRoleRepository ??= new Repository<UserRole>(_context);
+    public IUserListingFavoriteRepository UserListingFavoriteRepository => _userListingFavoriteRepository ??= new UserListingFavoriteRepository(_context);
 
     protected virtual void Dispose(bool disposing)
     {

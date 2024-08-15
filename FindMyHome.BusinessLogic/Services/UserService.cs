@@ -2,6 +2,7 @@
 using FindMyHome.Domain.DTO.User;
 using FindMyHome.Domain.Entities;
 using FindMyHome.Domain.Interfaces;
+using Schedent.Common.Enums;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -28,7 +29,8 @@ public class UserService : BaseService
                 LastName = model.LastName,
                 UserRoleId = (int)UserRoleType.User,
                 Salt = salt,
-                PasswordHash = CreatePasswordHash(model.Password, salt)
+                PasswordHash = CreatePasswordHash(model.Password, salt),
+                PhoneNumber = model.PhoneNumber,
             };
 
             UnitOfWork.UserRepository.Add(user);
@@ -80,7 +82,8 @@ public class UserService : BaseService
         {
             FirstName = user.FirstName,
             LastName = user.LastName,
-            EmailAddress = user.Email
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber
         };
     }
 
@@ -90,7 +93,7 @@ public class UserService : BaseService
 
         user.FirstName = model.FirstName;
         user.LastName = model.LastName;
-        user.Email = model.EmailAddress;
+        user.Email = model.Email;
 
         UnitOfWork.SaveChanges();
     }
@@ -102,5 +105,10 @@ public class UserService : BaseService
         user.DeviceToken = token;
 
         UnitOfWork.SaveChanges();
+    }
+
+    public int GetLoggedInUserId(string token)
+    {
+        return int.Parse(JwtService.GetClaim(TokenClaim.UserId, token));
     }
 }

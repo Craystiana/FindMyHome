@@ -27,8 +27,8 @@ export class ListingDetailsComponent implements OnInit {
       apiKey: 'AIzaSyDsJDz05oB8BjY9q3o1yL9JQ1rj2Kvd47c',
       config: {
         center: {
-          lat: 33.6,
-          lng: -117.9,
+          lat: this.listing?.latitude ?? 33.6,
+          lng: this.listing?.longitude ?? -117.9,
         },
         zoom: 8,
       },
@@ -37,16 +37,16 @@ export class ListingDetailsComponent implements OnInit {
       // Add a marker to the map
     await this.newMap.addMarker({
       coordinate: {
-        lat: 33.6,
-        lng: -117.9
+        lat: this.listing?.latitude ?? 33.6,
+        lng: this.listing?.longitude ?? -117.9,
       }
     });
 
     // Move the map programmatically
     await this.newMap.setCamera({
       coordinate: {
-        lat: 33.6,
-        lng: -117.9
+        lat: this.listing?.latitude ?? 33.6,
+        lng: this.listing?.longitude ?? -117.9,
       }
     });
   }
@@ -132,4 +132,21 @@ export class ListingDetailsComponent implements OnInit {
     this.router.navigateByUrl("/listing/edit?listingId=" + this.listingId);
   }
 
+  addToFavorites() {
+    if (this.listingId && this.listing) {
+      this.listingService.addToFavorites(this.listingId)
+        .pipe(take(1))
+        .subscribe();
+      this.listing.isFavorite = true;
+    }
+  }
+
+  removeFromFavorites() {
+    if (this.listingId && this.listing) {
+      this.listingService.removeFromFavorites(this.listingId)
+        .pipe(take(1))
+        .subscribe()
+      this.listing.isFavorite = false;
+    }
+  }
 }

@@ -4,6 +4,7 @@ using FindMyHome.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FindMyHome.DataAccess.Migrations
 {
     [DbContext(typeof(FindMyHomeContext))]
-    partial class FindMyHomeContextModelSnapshot : ModelSnapshot
+    [Migration("20240815145748_ChangeListing")]
+    partial class ChangeListing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,7 +108,7 @@ namespace FindMyHome.DataAccess.Migrations
                     b.Property<long>("Price")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("SoldToUserId")
+                    b.Property<int>("SoldToUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -217,29 +220,6 @@ namespace FindMyHome.DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("FindMyHome.Domain.Entities.UserListingFavorite", b =>
-                {
-                    b.Property<int>("FavoriteId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FavoriteId"));
-
-                    b.Property<int>("ListingId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FavoriteId");
-
-                    b.HasIndex("ListingId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserListingFavorites");
-                });
-
             modelBuilder.Entity("FindMyHome.Domain.Entities.UserRole", b =>
                 {
                     b.Property<int>("UserRoleId")
@@ -292,7 +272,8 @@ namespace FindMyHome.DataAccess.Migrations
                     b.HasOne("FindMyHome.Domain.Entities.User", "SoldToUser")
                         .WithMany()
                         .HasForeignKey("SoldToUserId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("City");
 
@@ -316,25 +297,6 @@ namespace FindMyHome.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("UserRole");
-                });
-
-            modelBuilder.Entity("FindMyHome.Domain.Entities.UserListingFavorite", b =>
-                {
-                    b.HasOne("FindMyHome.Domain.Entities.Listing", "Listing")
-                        .WithMany()
-                        .HasForeignKey("ListingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FindMyHome.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Listing");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FindMyHome.Domain.Entities.City", b =>

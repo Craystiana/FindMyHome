@@ -23,4 +23,6 @@ public interface IListingRepository : IRepository<Listing>
     void RemoveRange(IEnumerable<Listing> listings);
 
     IEnumerable<Listing> GetList(string search, IEnumerable<int> listingTypeIds, IEnumerable<int> listingMarketingTypeIds, IEnumerable<int> countyIds, IEnumerable<int> cityIds, int? sortById);
+
+    IEnumerable<Listing> GetByUserId(int listingId);
 }

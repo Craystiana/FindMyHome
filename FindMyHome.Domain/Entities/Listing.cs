@@ -23,11 +23,11 @@ public class Listing
     public int CityId { get; set; }
     [Required]
     public long Price { get; set; }
-    public long? Latitude { get; set; }
-    public long? Longitude { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
     [Required]
     public int CreatedByUserId {  get; set; }
-    public int SoldToUserId { get; set; }
+    public int? SoldToUserId { get; set; }
     [DefaultValue(false)]
     public bool IsClosed {  get; set; }
     public byte[]? Picture { get; set; }
@@ -35,7 +35,7 @@ public class Listing
     public DateTime? UpdatedOn { get; set;}
 
     public virtual User CreatedByUser { get; set; }
-    public virtual User SoldToUser {  get; set; }
+    public virtual User? SoldToUser {  get; set; }
     public virtual ListingType ListingType { get; set; }
     public virtual ListingMarketingType ListingMarketingType { get; set; }
     public virtual County County { get; set; }

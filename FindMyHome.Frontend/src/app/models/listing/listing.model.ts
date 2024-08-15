@@ -11,4 +11,5 @@ export interface ListingModel {
     picture: Blob | string | null;
     latitude: number;
     longitude: number;
+    isFavorite: boolean;
 }

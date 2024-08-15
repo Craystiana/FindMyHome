@@ -14,7 +14,7 @@ import { GoogleMap } from '@capacitor/google-maps';
   templateUrl: './listing-edit.component.html',
   styleUrls: ['./listing-edit.component.scss'],
 })
-export class ListingEditComponent  implements OnInit {
+export class ListingEditComponent {
   public listingData : ListingData | undefined;
   public isLoading: boolean = false;
   public listingId : number = 0;
@@ -24,16 +24,11 @@ export class ListingEditComponent  implements OnInit {
   @ViewChild('map')
   public mapRef: ElementRef<HTMLElement> | undefined;
   public newMap: GoogleMap | undefined;
-  public latitude: number = 44.439663;
-  public longitude: number = 26.096306;
+  public latitude: number | undefined;
+  public longitude: number | undefined;
   public markerId: string | undefined;
 
-  constructor(private router: Router, private listingService : ListingService, private toastCtrl: ToastController, private route: ActivatedRoute) { }
-
-  ngOnInit() {
-    this.loadData();
-    this.createMap();
-  }
+  constructor(private router: Router, private listingService: ListingService, private toastCtrl: ToastController, private route: ActivatedRoute) { }
 
   ionViewWillEnter(){
     this.loadData();
@@ -65,48 +60,39 @@ export class ListingEditComponent  implements OnInit {
   }
 
   onEdit(editForm: NgForm){
-    if (this.listingId) {
-      this.isLoading = true;
-      var model = new ListingEdit(this.listingId,
-                              editForm.value.carType,
-                              editForm.value.carClass,
-                              editForm.value.carBrand,
-                              editForm.value.licensePlate,
-                              editForm.value.odometer,
-                              editForm.value.price,
-                              this.pictureBase64,
-                              this.latitude,
-                              this.longitude);               
-      
-      this.listingService.edit(model).pipe(first()).subscribe(
-        data =>{
-          if(data==true){
-            if(this.listingId !== undefined){
-              this.router.navigateByUrl('/listing/detail?listingId=' + this.listingId);
-            }
-            else{
-              this.router.navigateByUrl('/listing');
-            }
-            this.toastCtrl.create({
-              message: this.listingId !== undefined ? 'Listing edited succesfully.' : 'Listing added succesfully.',
-              duration: 5000,
-              position: 'bottom',
-              color: 'success',
-              buttons: ['Dismiss']
-            }).then((el) => el.present());
+    this.isLoading = true;
+    debugger;
+    var model = new ListingEdit(this.listingId,
+                            editForm.value.listingType,
+                            editForm.value.listingMarketingType,
+                            editForm.value.city,
+                            editForm.value.county,
+                            editForm.value.title,
+                            editForm.value.description,
+                            editForm.value.location,
+                            editForm.value.price,
+                            this.pictureBase64,
+                            this.latitude,
+                            this.longitude);               
+    
+    this.listingService.edit(model).pipe(first()).subscribe(
+      data =>{
+        if(data==true){
+          if(this.listingId !== undefined){
+            this.router.navigateByUrl('/listing/detail?listingId=' + this.listingId);
           }
           else{
-            this.toastCtrl.create({
-              message: 'Something went wrong. Please try again.',
-              duration: 5000,
-              position: 'bottom',
-              color: 'danger',
-              buttons: ['Dismiss']
-            }).then((el) => el.present());
+            this.router.navigateByUrl('/listing');
           }
-          this.isLoading = false;
-        },
-        error => {
+          this.toastCtrl.create({
+            message: this.listingId !== undefined ? 'Listing edited succesfully.' : 'Listing added succesfully.',
+            duration: 5000,
+            position: 'bottom',
+            color: 'success',
+            buttons: ['Dismiss']
+          }).then((el) => el.present());
+        }
+        else{
           this.toastCtrl.create({
             message: 'Something went wrong. Please try again.',
             duration: 5000,
@@ -114,11 +100,21 @@ export class ListingEditComponent  implements OnInit {
             color: 'danger',
             buttons: ['Dismiss']
           }).then((el) => el.present());
-          
-          this.isLoading = false;
         }
-      )
-    }                   
+        this.isLoading = false;
+      },
+      error => {
+        this.toastCtrl.create({
+          message: 'Something went wrong. Please try again.',
+          duration: 5000,
+          position: 'bottom',
+          color: 'danger',
+          buttons: ['Dismiss']
+        }).then((el) => el.present());
+        
+        this.isLoading = false;
+      }
+    )           
   }
 
   onDocumentUpload($event: any) {
@@ -140,8 +136,8 @@ export class ListingEditComponent  implements OnInit {
       apiKey: 'AIzaSyDsJDz05oB8BjY9q3o1yL9JQ1rj2Kvd47c',
       config: {
         center: {
-          lat: this.latitude,
-          lng: this.longitude,
+          lat: this.latitude ?? 44.439663,
+          lng: this.longitude ?? 26.096306,
         },
         zoom: 10,
       },
@@ -152,11 +148,12 @@ export class ListingEditComponent  implements OnInit {
     }
 
     this.newMap.setOnMapClickListener(async event => {
+      this.latitude = event.latitude;
+      this.longitude = event.longitude;
       if (this.markerId) {
         this.newMap?.removeMarker(this.markerId);
       }
       this.markerId = await this.setMarker(event.latitude, event.longitude);
-      
     })
   }
 
@@ -177,5 +174,4 @@ export class ListingEditComponent  implements OnInit {
 
     return markerId;
   }
-
 }

@@ -2,6 +2,7 @@
 using FindMyHome.Domain.DTOs.Listing;
 using FindMyHome.Domain.Entities;
 using FindMyHome.Domain.Interfaces;
+using System.Reflection;
 
 namespace FindMyHome.BusinessLogic.Services;
 
@@ -9,9 +10,10 @@ public class ListingService : BaseService
 {
     public ListingService(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
-    public ListingModel GetListingDetails(int listingId)
+    public ListingModel GetListingDetails(int listingId, int userId)
     {
         var listing = UnitOfWork.ListingRepository.Get(listingId);
+        var isFavorite = UnitOfWork.UserListingFavoriteRepository.Find(f => f.ListingId == listingId && f.UserId == userId).FirstOrDefault();
 
         return new ListingModel
         {
@@ -27,7 +29,8 @@ public class ListingService : BaseService
             Price = listing.Price,
             Latitude = listing.Latitude,
             Longitude = listing.Longitude,
-            Picture = listing.Picture != null ? ConvertToBase64String(listing.Picture) : null
+            Picture = listing.Picture != null ? ConvertToBase64String(listing.Picture) : null,
+            IsFavorite = isFavorite != null
         };
     }
 
@@ -42,7 +45,7 @@ public class ListingService : BaseService
         };
     }
 
-    public void Add(ListingEditModel model)
+    public void Add(ListingEditModel model, int userId)
     {
         var listing = new Listing
         {
@@ -57,7 +60,7 @@ public class ListingService : BaseService
             Latitude = model.Latitude,
             Longitude = model.Longitude,
             Picture = model.Picture != null ? ConvertToByteArray(model.Picture) : null,
-            CreatedByUserId = model.UserId
+            CreatedByUserId = userId
         };
 
         UnitOfWork.ListingRepository.Add(listing);
@@ -93,8 +96,10 @@ public class ListingService : BaseService
         UnitOfWork.SaveChanges();
     }
 
-    public IEnumerable<ListingModel> GetList(ListingQueryModel model)
+    public IEnumerable<ListingModel> GetList(ListingQueryModel model, int userId)
     {
+        var userFavorites = UnitOfWork.UserListingFavoriteRepository.Find(f => f.UserId == userId).Select(f => f.ListingId).ToList();
+
         return UnitOfWork.ListingRepository.GetList(model.SearchTerm, model.ListingTypeIds, model.ListingMarketingTypeIds, model.CountyIds, model.CityIds, model.SortById)
             .Select(c => new ListingModel
             {
@@ -110,8 +115,30 @@ public class ListingService : BaseService
                 Price = c.Price,
                 Latitude = c.Latitude,
                 Longitude = c.Longitude,
+                IsFavorite = userFavorites.Contains(c.ListingId),
                 Picture = c.Picture != null ? ConvertToBase64String(c.Picture) : null
             });
+    }
+
+    public IEnumerable<ListingModel> GetByUserId(int userId)
+    {
+        return UnitOfWork.ListingRepository.GetByUserId(userId)
+        .Select(c => new ListingModel
+        {
+            ListingId = c.ListingId,
+            Title = c.Title,
+            Description = c.Description,
+            Location = c.Location,
+            ListingType = c.ListingType.Name,
+            ListingMarketingType = c.ListingMarketingType.Name,
+            County = c.County.Name,
+            City = c.City.Name,
+            IsClosed = c.IsClosed,
+            Price = c.Price,
+            Latitude = c.Latitude,
+            Longitude = c.Longitude,
+            Picture = c.Picture != null ? ConvertToBase64String(c.Picture) : null
+        });
     }
 
     public static byte[] ConvertToByteArray(string img)

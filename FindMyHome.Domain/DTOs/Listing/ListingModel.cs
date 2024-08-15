@@ -11,9 +11,10 @@ public class ListingModel
     public string? County { get; set; }
     public string? City { get; set; }
     public long? Price { get; set; }
-    public long? Latitude { get; set; }
-    public long? Longitude { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
     public bool IsClosed { get; set; }
     public string? Picture { get; set; }
+    public bool IsFavorite { get; set; } = false;
     public DateTime CreatedOn { get; set; }
 }

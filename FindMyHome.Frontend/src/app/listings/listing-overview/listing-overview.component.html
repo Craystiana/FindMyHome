@@ -67,7 +67,7 @@
                 mode="ios"
                 [(ngModel)]="listingCounty"
                 (ionChange)="getListings()">
-      <ion-select-option *ngFor="let listingCounty of listingData.listingCounties" [value]="listingCounty.id">{{listingCounty.name}}</ion-select-option>
+      <ion-select-option *ngFor="let listingCounty of listingData.counties" [value]="listingCounty.id">{{listingCounty.name}}</ion-select-option>
     </ion-select>
 
     <ion-select placeholder="Oras" 
@@ -79,7 +79,7 @@
                 mode="ios" 
                 [(ngModel)]="listingCity" 
                 (ionChange)="getListings()">
-      <ion-select-option *ngFor="let listingCity of listingData.listingCities" [value]="listingCity.id">{{listingCity.name}}</ion-select-option>
+      <ion-select-option *ngFor="let listingCity of listingData.cities" [value]="listingCity.id">{{listingCity.name}}</ion-select-option>
     </ion-select>
 
     <ion-select placeholder="Sortare"
@@ -102,7 +102,7 @@
                *ngFor="let listing of listings">
         <ion-card [routerLink]="['/listing/detail']" [queryParams]="{listingId : listing.listingId}">
           <img [src]="listing.picture !== null ?
-           listing.picture : 
+           'data:image/jpg;base64,' + listing.picture : 
            'https://images.adsttc.com/media/images/63a0/5173/a452/0802/91ad/5440/slideshow/cuas-house-3fconcept_6.jpg?1671451021'"
           style="width: 100%; height: 200px;"/>
           <ion-card-header class="ion-text-center">
@@ -119,10 +119,7 @@
             <ion-item lines="none">
               <ion-icon name="cash-outline" slot="start" color="success"></ion-icon> 
               <ion-label>{{listing.price}} RON</ion-label>
-            </ion-item>
-
-            <ion-item lines="none">
-              <ion-icon name="star-outline" slot="end" color="warning"></ion-icon>
+              <ion-icon *ngIf="listing.isFavorite" name="star" slot="end" color="warning"></ion-icon>
             </ion-item>
           </ion-card-content>
         </ion-card>

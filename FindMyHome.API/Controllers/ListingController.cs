@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FindMyHome.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class ListingController : BaseController
 {
     private readonly ListingService _listingService;
@@ -23,7 +23,7 @@ public class ListingController : BaseController
     {
         try
         {
-            return new JsonResult(_listingService.GetListingDetails(listingId));
+            return new JsonResult(_listingService.GetListingDetails(listingId, (int)CurrentUserId));
         }
         catch (Exception e)
         {
@@ -53,13 +53,13 @@ public class ListingController : BaseController
     {
         try
         {
-            if (model.ListingId != null)
+            if (model.ListingId != null && model.ListingId != 0)
             {
                 _listingService.Edit(model);
             }
             else
             {
-                _listingService.Add(model);
+                _listingService.Add(model, (int)CurrentUserId);
             }
 
             return new JsonResult(true);
@@ -77,7 +77,22 @@ public class ListingController : BaseController
     {
         try
         {
-            return new JsonResult(_listingService.GetList(model));
+            return new JsonResult(_listingService.GetList(model, (int)CurrentUserId));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error while fetching the car list " + ex);
+            return new JsonResult(false);
+        }
+    }
+
+    [HttpGet]
+    [Route("Own")]
+    public IActionResult GetOwn()
+    {
+        try
+        {
+            return new JsonResult(_listingService.GetByUserId((int)CurrentUserId));
         }
         catch (Exception ex)
         {

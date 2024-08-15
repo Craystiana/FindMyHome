@@ -15,14 +15,14 @@ public class User
     [Required]
     public string Email { get; set; }
     [Required]
+    public string PhoneNumber { get; set; }
+    [Required]
     public string PasswordHash { get; set; }
     [Required]
     public string Salt { get; set; }
     public string? DeviceToken { get; set; }
-    [Required]
-    public DateTime CreatedOn { get; set; }
-    [Required]
-    public DateTime UpdatedOn { get; set; }
+    public DateTime? CreatedOn { get; set; }
+    public DateTime? UpdatedOn { get; set; }
 
     public virtual UserRole UserRole { get; set; }
 }

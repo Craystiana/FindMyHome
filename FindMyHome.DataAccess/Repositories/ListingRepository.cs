@@ -3,6 +3,7 @@ using FindMyHome.Common.Enums;
 using FindMyHome.Domain.Entities;
 using FindMyHome.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FindMyHome.DataAccess.Repositories;
 
@@ -44,6 +45,15 @@ public class ListingRepository : IListingRepository
                             .FirstOrDefault(c => c.ListingId == listingId);
     }
 
+    public IEnumerable<Listing> GetByUserId(int userId)
+    {
+        return _context.Listings.Include(c => c.ListingType)
+                            .Include(c => c.ListingMarketingType)
+                            .Include(c => c.City)
+                            .Include(c => c.County)
+                            .Where(c => c.CreatedByUserId == userId);
+    }
+
     public IEnumerable<Listing> GetList(string search,
                                     IEnumerable<int> listingTypeIds,
                                     IEnumerable<int> listingMarketingTypeIds,
@@ -61,22 +71,22 @@ public class ListingRepository : IListingRepository
             listings = listings.Where(c => c.Title.Contains(search) || c.Description.Contains(search));
         }
 
-        if (listingTypeIds != null)
+        if (!listingTypeIds.IsNullOrEmpty())
         {
             listings = listings.Where(c => listingTypeIds.Contains(c.ListingTypeId));
         }
 
-        if (listingMarketingTypeIds != null)
+        if (!listingMarketingTypeIds.IsNullOrEmpty())
         {
             listings = listings.Where(c => listingMarketingTypeIds.Contains(c.ListingMarketingTypeId));
         }
 
-        if (countyIds != null)
+        if (!countyIds.IsNullOrEmpty())
         {
             listings = listings.Where(c => countyIds.Contains(c.CountyId));
         }
 
-        if (cityIds != null)
+        if (!cityIds.IsNullOrEmpty())
         {
             listings = listings.Where(c => cityIds.Contains(c.CityId));
         }

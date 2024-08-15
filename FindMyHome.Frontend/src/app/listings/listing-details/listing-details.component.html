@@ -8,6 +8,14 @@
       Detalii oferta - {{listing.listingType}}
     </ion-title>
 
+    <ion-button *ngIf="listing && !listing.isFavorite" slot="end" color="dark" shape="round" title="Add to favorites" (click)="addToFavorites()"> 
+      <ion-icon name="star-outline" color="warning"></ion-icon>
+    </ion-button>
+
+    <ion-button *ngIf="listing && listing.isFavorite" slot="end" color="dark" shape="round" title="Remove from favorites" (click)="removeFromFavorites()"> 
+      <ion-icon name="star" color="warning"></ion-icon>
+    </ion-button>
+
     <ion-button slot="end" color="dark" shape="round" title="Edit" (click)="editPage()">
       <ion-icon name="pencil-outline"></ion-icon>
     </ion-button>
@@ -24,7 +32,7 @@
       <ion-col size-lg="6" offset-lg="3">
         <ion-card *ngIf="this.listing !== undefined">
           <img [src]="listing.picture !== null ?
-               listing.picture :
+               'data:image/jpg;base64,' + listing.picture :
                'https://images.adsttc.com/media/images/63a0/5173/a452/0802/91ad/5440/slideshow/cuas-house-3fconcept_6.jpg?1671451021'"
                style="width: 100%; max-height: 500px;"/>
           <ion-card-header class="ion-text-center">
@@ -32,7 +40,6 @@
             <ion-card-title>
               <ion-item lines="none">
                 <ion-label>{{listing.title}}</ion-label>
-                <ion-icon name="star-outline" slot="end" color="warning"></ion-icon>
               </ion-item>
             </ion-card-title>
           </ion-card-header>
