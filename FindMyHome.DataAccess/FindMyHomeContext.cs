@@ -14,6 +14,7 @@ public class FindMyHomeContext : DbContext
     public virtual DbSet<ListingMarketingType> ListingMarketTypes { get; set; }
     public virtual DbSet<Listing> Listings { get; set; }
     public virtual DbSet<UserListingFavorite> UserListingFavorites { get; set; }
+    public virtual DbSet<ListingPicture> ListingPictures { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

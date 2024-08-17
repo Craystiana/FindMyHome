@@ -40,6 +40,8 @@ public class UserListingFavoriteRepository : IUserListingFavoriteRepository
                             .ThenInclude(c => c.ListingType)
                             .Include(c => c.Listing)
                             .ThenInclude(c => c.ListingMarketingType)
+                            .Include(c => c.Listing)
+                            .ThenInclude(c => c.ListingPictures)
                             .FirstOrDefault(c => c.FavoriteId == id);
     }
 
@@ -59,6 +61,8 @@ public class UserListingFavoriteRepository : IUserListingFavoriteRepository
                             .ThenInclude(c => c.ListingType)
                             .Include(c => c.Listing)
                             .ThenInclude(c => c.ListingMarketingType)
+                            .Include(c => c.Listing)
+                            .ThenInclude(c => c.ListingPictures)
                             .Where(c => c.UserId == userId);
     }
 

@@ -8,7 +8,7 @@ export interface ListingModel {
     county: string;
     city: string;
     price: number;
-    picture: Blob | string | null;
+    pictures: string[] | null;
     latitude: number;
     longitude: number;
     isFavorite: boolean;

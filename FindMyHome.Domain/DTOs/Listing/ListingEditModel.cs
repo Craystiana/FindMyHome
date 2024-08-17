@@ -14,5 +14,5 @@ public class ListingEditModel
     public double? Latitude { get; set; }
     public double? Longitude { get; set; }
     public bool IsClosed { get; set; }
-    public string? Picture { get; set; }
+    public List<string> Pictures { get; set; }
 }

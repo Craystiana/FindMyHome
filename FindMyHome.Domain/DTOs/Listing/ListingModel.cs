@@ -14,7 +14,7 @@ public class ListingModel
     public double? Latitude { get; set; }
     public double? Longitude { get; set; }
     public bool IsClosed { get; set; }
-    public string? Picture { get; set; }
+    public List<string> Pictures { get; set; }
     public bool IsFavorite { get; set; } = false;
     public DateTime CreatedOn { get; set; }
 }

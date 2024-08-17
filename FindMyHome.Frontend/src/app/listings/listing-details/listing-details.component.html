@@ -31,10 +31,12 @@
     <ion-row>
       <ion-col size-lg="6" offset-lg="3">
         <ion-card *ngIf="this.listing !== undefined">
-          <img [src]="listing.picture !== null ?
-               'data:image/jpg;base64,' + listing.picture :
-               'https://images.adsttc.com/media/images/63a0/5173/a452/0802/91ad/5440/slideshow/cuas-house-3fconcept_6.jpg?1671451021'"
+          <swiper-container *ngIf="listing.pictures">
+            <swiper-slide *ngFor="let picture of listing.pictures">
+              <img [src]="'data:image/jpg;base64,' + picture"
                style="width: 100%; max-height: 500px;"/>
+            </swiper-slide>
+          </swiper-container>
           <ion-card-header class="ion-text-center">
             <ion-card-subtitle>{{listing.listingType}}</ion-card-subtitle>
             <ion-card-title>
@@ -83,5 +85,5 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <capacitor-google-map #map></capacitor-google-map>
+  <div id='map'></div>
 </ion-content>

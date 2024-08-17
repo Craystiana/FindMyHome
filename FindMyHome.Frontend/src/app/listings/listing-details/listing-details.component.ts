@@ -1,11 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { ListingModel } from 'src/app/models/listing/listing.model';
 import { ListingService } from '../listing.service';
 import { take } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import { GoogleMap } from '@capacitor/google-maps';
 
 @Component({
   selector: 'app-listing-details',
@@ -15,43 +14,7 @@ import { GoogleMap } from '@capacitor/google-maps';
 export class ListingDetailsComponent implements OnInit {
   public listing: ListingModel | undefined;
   private listingId: number | undefined;
-
-  @ViewChild('map')
-  public mapRef: ElementRef<HTMLElement> | undefined;
-  public newMap: GoogleMap | undefined;
-
-  async createMap() {
-    this.newMap = await GoogleMap.create({
-      id: 'my-cool-map',
-      element: this.mapRef?.nativeElement ?? new HTMLElement(),
-      apiKey: 'AIzaSyDsJDz05oB8BjY9q3o1yL9JQ1rj2Kvd47c',
-      config: {
-        center: {
-          lat: this.listing?.latitude ?? 33.6,
-          lng: this.listing?.longitude ?? -117.9,
-        },
-        zoom: 8,
-      },
-    });
-
-      // Add a marker to the map
-    await this.newMap.addMarker({
-      coordinate: {
-        lat: this.listing?.latitude ?? 33.6,
-        lng: this.listing?.longitude ?? -117.9,
-      }
-    });
-
-    // Move the map programmatically
-    await this.newMap.setCamera({
-      coordinate: {
-        lat: this.listing?.latitude ?? 33.6,
-        lng: this.listing?.longitude ?? -117.9,
-      }
-    });
-  }
-
-
+  public map: google.maps.Map | undefined;
 
   constructor(private route: ActivatedRoute,
               private loadingController: LoadingController,
@@ -86,10 +49,25 @@ export class ListingDetailsComponent implements OnInit {
       .subscribe(data => {
         this.listing = data;
         loading.dismiss();
+        this.createMap();
       })
     }
+  }
 
-    this.createMap();
+  async createMap() {
+    if (this.listing?.latitude && this.listing.longitude) {
+      var mapElement = document.getElementById('map') as HTMLElement;
+      var location = new google.maps.LatLng(this.listing?.latitude, this.listing?.longitude);
+      this.map = new google.maps.Map(mapElement, {
+        center: location,
+        zoom: 15,
+      });
+
+      new google.maps.Marker({
+        position: location,
+        map: this.map,
+      });
+    }
   }
 
   onDelete(){
@@ -99,7 +77,7 @@ export class ListingDetailsComponent implements OnInit {
       .subscribe(
         data => {
           if(data === true){
-            this.router.navigateByUrl("/listings");
+            this.router.navigateByUrl("/listing");
             this.toastCtrl.create({
               message: 'Listing removed successfully',
               duration: 5000,

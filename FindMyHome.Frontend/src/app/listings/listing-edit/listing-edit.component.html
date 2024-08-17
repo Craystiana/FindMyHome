@@ -84,7 +84,7 @@
 
             <ion-item class="item-content">
               <ion-label position="stacked">Imagine</ion-label>
-              <ion-input type="file" ngModel name="photo" (change)="onDocumentUpload($event)"></ion-input>
+              <ion-input multiple type="file" ngModel name="photo" (change)="onDocumentUpload($event)"></ion-input>
             </ion-item>
 
             <ion-button type="submit" [disabled]="!editForm.valid || isPictureLoaded === false" expand="block">{{isLoading? "": listingId > 0 ? 'Edit' : 'Add'}}
@@ -96,5 +96,16 @@
       </ion-row>
     </ion-grid>
   </form>
-  <capacitor-google-map #map></capacitor-google-map>
+  <!-- <capacitor-google-map #map></capacitor-google-map> -->
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place"></ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+  <ion-list [hidden]="autocompleteItems.length === 0">
+    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+      {{ item.description }}
+    </ion-item>
+  </ion-list>
+  <div id='map'></div>
 </ion-content>

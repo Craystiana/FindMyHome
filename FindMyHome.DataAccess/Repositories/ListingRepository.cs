@@ -42,6 +42,7 @@ public class ListingRepository : IListingRepository
                             .Include(c => c.ListingMarketingType)
                             .Include(c => c.City)
                             .Include(c => c.County)
+                            .Include(c => c.ListingPictures)
                             .FirstOrDefault(c => c.ListingId == listingId);
     }
 
@@ -51,6 +52,7 @@ public class ListingRepository : IListingRepository
                             .Include(c => c.ListingMarketingType)
                             .Include(c => c.City)
                             .Include(c => c.County)
+                            .Include(c => c.ListingPictures)
                             .Where(c => c.CreatedByUserId == userId);
     }
 
@@ -64,7 +66,8 @@ public class ListingRepository : IListingRepository
         IQueryable<Listing> listings = _context.Listings.Include(c => c.ListingType)
                                              .Include(c => c.ListingMarketingType)
                                              .Include(c => c.County)
-                                             .Include(c => c.City);
+                                             .Include(c => c.City)
+                                             .Include(c => c.ListingPictures);
 
         if (!string.IsNullOrEmpty(search))
         {

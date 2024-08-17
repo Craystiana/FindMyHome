@@ -8,7 +8,7 @@ export class ListingEdit{
     public description : string;
     public location: string;
     public price : number;
-    public picture : string | undefined;
+    public pictures : string[] | undefined;
     public latitude: number | undefined;
     public longitude: number | undefined;
 
@@ -21,7 +21,7 @@ export class ListingEdit{
                        description : string,
                        location: string,
                        price : number, 
-                       photo : string | undefined,
+                       photo : string[] | undefined,
                        latitude: number | undefined,
                        longitude: number | undefined) {
         this.listingId = carId;                   
@@ -33,7 +33,7 @@ export class ListingEdit{
         this.description = description;
         this.location = location;
         this.price = price;
-        this.picture = photo;
+        this.pictures = photo;
         this.latitude = latitude;
         this.longitude = longitude;
     }

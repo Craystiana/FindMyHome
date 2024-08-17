@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingModel } from 'src/app/models/listing/listing.model';
 import { ListingService } from '../listing.service';
@@ -7,7 +7,7 @@ import { first, take } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { ListingEdit } from 'src/app/models/listing/listing-edit.model';
 import { ListingData } from 'src/app/models/listing/listing-data.model';
-import { GoogleMap } from '@capacitor/google-maps';
+import { google } from "google-maps";
 
 @Component({
   selector: 'app-listing-edit',
@@ -19,16 +19,23 @@ export class ListingEditComponent {
   public isLoading: boolean = false;
   public listingId : number = 0;
   public listing: ListingModel | undefined;
-  public pictureBase64 : string | undefined;
+  public pictures : string[] = [];
   public isPictureLoaded = true;
-  @ViewChild('map')
-  public mapRef: ElementRef<HTMLElement> | undefined;
-  public newMap: GoogleMap | undefined;
+  public map: google.maps.Map | undefined;
   public latitude: number | undefined;
   public longitude: number | undefined;
-  public markerId: string | undefined;
+  public GoogleAutocomplete: google.maps.places.AutocompleteService;
+  public autocomplete: any;
+  public autocompleteItems: any;
+  public geocoder: google.maps.Geocoder;
+  public marker: google.maps.Marker | undefined;
 
-  constructor(private router: Router, private listingService: ListingService, private toastCtrl: ToastController, private route: ActivatedRoute) { }
+  constructor(private router: Router, private listingService: ListingService, private toastCtrl: ToastController, private route: ActivatedRoute, private zone: NgZone) {
+    this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+    this.autocomplete = { input: '' };
+    this.autocompleteItems = [];
+    this.geocoder = new google.maps.Geocoder;
+   }
 
   ionViewWillEnter(){
     this.loadData();
@@ -54,6 +61,7 @@ export class ListingEditComponent {
           this.listing = data;
           this.latitude = data.latitude;
           this.longitude = data.longitude;
+          this.setMarker(new google.maps.LatLng(this.latitude, this.longitude));
         }
       );
     }
@@ -61,7 +69,6 @@ export class ListingEditComponent {
 
   onEdit(editForm: NgForm){
     this.isLoading = true;
-    debugger;
     var model = new ListingEdit(this.listingId,
                             editForm.value.listingType,
                             editForm.value.listingMarketingType,
@@ -71,14 +78,14 @@ export class ListingEditComponent {
                             editForm.value.description,
                             editForm.value.location,
                             editForm.value.price,
-                            this.pictureBase64,
+                            this.pictures,
                             this.latitude,
                             this.longitude);               
     
     this.listingService.edit(model).pipe(first()).subscribe(
       data =>{
         if(data==true){
-          if(this.listingId !== undefined){
+          if(this.listingId !== undefined && this.listingId !== 0){
             this.router.navigateByUrl('/listing/detail?listingId=' + this.listingId);
           }
           else{
@@ -118,60 +125,68 @@ export class ListingEditComponent {
   }
 
   onDocumentUpload($event: any) {
-    const reader = new FileReader();
+    this.pictures = [];
+    Array.from($event.target.files).forEach((photo: any) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(photo);
+      this.isPictureLoaded = false;
 
-    reader.readAsDataURL($event.target.files.item(0));
-    this.isPictureLoaded = false;
-
-    reader.onload = () => {
-      this.pictureBase64 = reader.result?.toString().split('base64,').pop();
-      this.isPictureLoaded = true;
-    }
+      reader.onload = () => {
+        var picture = reader.result?.toString().split('base64,').pop();
+        if (picture) {
+          this.pictures?.push(picture);
+          this.isPictureLoaded = true;
+        }
+      }
+    });
   }
 
   async createMap() {
-    this.newMap = await GoogleMap.create({
-      id: 'edit-map',
-      element: this.mapRef?.nativeElement ?? new HTMLElement(),
-      apiKey: 'AIzaSyDsJDz05oB8BjY9q3o1yL9JQ1rj2Kvd47c',
-      config: {
-        center: {
-          lat: this.latitude ?? 44.439663,
-          lng: this.longitude ?? 26.096306,
-        },
-        zoom: 10,
-      },
+    var mapElement = document.getElementById('map') as HTMLElement;
+    this.map = new google.maps.Map(mapElement, {
+      center: { lat: this.latitude ?? 44.439663, lng: this.longitude ?? 26.096306 },
+      zoom: 15
     });
 
-    if (this.latitude && this.longitude) {
-      this.markerId = await this.setMarker(this.latitude, this.longitude);
-    }
-
-    this.newMap.setOnMapClickListener(async event => {
-      this.latitude = event.latitude;
-      this.longitude = event.longitude;
-      if (this.markerId) {
-        this.newMap?.removeMarker(this.markerId);
-      }
-      this.markerId = await this.setMarker(event.latitude, event.longitude);
-    })
+    google.maps.event.addListener(this.map, 'click', (event: any) => {
+      this.setMarker(event.latLng)
+    });
   }
 
-  private async setMarker(latitude: number, longitude: number): Promise<string | undefined> {
-    const markerId = await this.newMap?.addMarker({
-      coordinate: {
-        lat: latitude,
-        lng: longitude
-      }
+  setMarker(location: google.maps.LatLng) {
+    this.marker?.setMap(null);
+    this.marker = new google.maps.Marker({
+      position: location,
+      map: this.map,
     });
+    this.map?.setCenter(location);
+  }
 
-    await this.newMap?.setCamera({
-      coordinate: {
-        lat: latitude,
-        lng: latitude
-      }
+  updateSearchResults() {
+    if (this.autocomplete.input === '') {
+      this.autocompleteItems = [];
+      return;
+    }
+    this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
+    (predictions: any) => {
+      this.autocompleteItems = [];
+      this.zone.run(() => {
+        predictions?.forEach((prediction: any) => {
+          this.autocompleteItems.push(prediction);
+        });
+      });
     });
+  }
 
-    return markerId;
+  selectSearchResult(item: any) {
+    this.autocompleteItems = [];
+  
+    this.geocoder.geocode({'placeId': item.place_id}, (results: any, status: any) => {
+      if(status === 'OK' && results && results[0]){
+        this.latitude = results[0].geometry.location.lat();
+        this.longitude = results[0].geometry.location.lng();
+        this.setMarker(results[0].geometry.location);
+      }
+    })
   }
 }

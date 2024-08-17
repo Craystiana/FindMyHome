@@ -2,7 +2,6 @@
 using FindMyHome.Domain.DTOs.Listing;
 using FindMyHome.Domain.Entities;
 using FindMyHome.Domain.Interfaces;
-using System.Reflection;
 
 namespace FindMyHome.BusinessLogic.Services;
 
@@ -29,7 +28,7 @@ public class ListingService : BaseService
             Price = listing.Price,
             Latitude = listing.Latitude,
             Longitude = listing.Longitude,
-            Picture = listing.Picture != null ? ConvertToBase64String(listing.Picture) : null,
+            Pictures = listing.ListingPictures.Select(c => ConvertToBase64String(c.Picture)).ToList(),
             IsFavorite = isFavorite != null
         };
     }
@@ -59,8 +58,11 @@ public class ListingService : BaseService
             Price = model.Price,
             Latitude = model.Latitude,
             Longitude = model.Longitude,
-            Picture = model.Picture != null ? ConvertToByteArray(model.Picture) : null,
-            CreatedByUserId = userId
+            CreatedByUserId = userId,
+            ListingPictures = model.Pictures.Select(p => new ListingPicture
+            {
+                Picture = ConvertToByteArray(p)
+            }).ToList(),
         };
 
         UnitOfWork.ListingRepository.Add(listing);
@@ -82,9 +84,12 @@ public class ListingService : BaseService
         listing.Latitude = model.Latitude;
         listing.Longitude = model.Longitude;
 
-        if (model.Picture != null)
+        if (model.Pictures != null)
         {
-            listing.Picture = ConvertToByteArray(model.Picture);
+            listing.ListingPictures = model.Pictures.Select(p => new ListingPicture
+            {
+                Picture = ConvertToByteArray(p)
+            }).ToList();
         }
 
         UnitOfWork.SaveChanges();
@@ -116,7 +121,7 @@ public class ListingService : BaseService
                 Latitude = c.Latitude,
                 Longitude = c.Longitude,
                 IsFavorite = userFavorites.Contains(c.ListingId),
-                Picture = c.Picture != null ? ConvertToBase64String(c.Picture) : null
+                Pictures = c.ListingPictures.Select(c => ConvertToBase64String(c.Picture)).ToList(),
             });
     }
 
@@ -137,7 +142,7 @@ public class ListingService : BaseService
             Price = c.Price,
             Latitude = c.Latitude,
             Longitude = c.Longitude,
-            Picture = c.Picture != null ? ConvertToBase64String(c.Picture) : null
+            Pictures = c.ListingPictures.Select(c => ConvertToBase64String(c.Picture)).ToList()
         });
     }
 

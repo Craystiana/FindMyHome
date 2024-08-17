@@ -10,12 +10,12 @@ import { Injectable } from "@angular/core";
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<UserModel>;
-  public currentUser: Observable<UserModel>;
+  private currentUserSubject: BehaviorSubject<UserModel | null>;
+  public currentUser: Observable<UserModel | null>;
   static currentUser: any;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<UserModel>(sessionStorage?.getItem('currentUser') ? JSON.parse(sessionStorage?.getItem('currentUser') ?? '') : '');
+    this.currentUserSubject = new BehaviorSubject<UserModel | null>(sessionStorage?.getItem('currentUser') ? JSON.parse(sessionStorage?.getItem('currentUser') ?? '') : '');
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
@@ -39,7 +39,7 @@ export class AuthService {
     }
   }
 
-  public currentUserValue(): UserModel {
+  public currentUserValue(): UserModel | null {
     return this.currentUserSubject.value;
   }
 
@@ -49,7 +49,7 @@ export class AuthService {
 
   public isAdmin(): boolean {
     if (this.isAuthenticated()) {
-      return this.currentUserSubject.value.userRole === UserRole.Admin;
+      return this.currentUserSubject.value?.userRole === UserRole.Admin;
     } else {
       return false;
     }
@@ -57,7 +57,7 @@ export class AuthService {
 
   public isUser(): boolean {
     if (this.isAuthenticated() === true) {
-      return this.currentUserSubject.value.userRole === UserRole.User;
+      return this.currentUserSubject.value?.userRole === UserRole.User;
     } else {
       return false;
     }
@@ -75,7 +75,7 @@ export class AuthService {
 
   logout() {
     sessionStorage.removeItem('currentUser');
-    //this.currentUserSubject.next(null);
+    this.currentUserSubject.next(null);
   }
 
   register(model: RegisterModel) {

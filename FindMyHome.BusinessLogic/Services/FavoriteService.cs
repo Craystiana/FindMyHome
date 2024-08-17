@@ -47,7 +47,7 @@ public class FavoriteService : BaseService
                 Price = c.Listing.Price,
                 Latitude = c.Listing.Latitude,
                 Longitude = c.Listing.Longitude,
-                Picture = c.Listing.Picture != null ? ConvertToBase64String(c.Listing.Picture) : null
+                Pictures = c.Listing.ListingPictures.Select(p => ConvertToBase64String(p.Picture)).ToList(),
             });
     }
 

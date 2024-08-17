@@ -30,7 +30,6 @@ public class Listing
     public int? SoldToUserId { get; set; }
     [DefaultValue(false)]
     public bool IsClosed {  get; set; }
-    public byte[]? Picture { get; set; }
     public DateTime? CreatedOn {  get; set; }
     public DateTime? UpdatedOn { get; set;}
 
@@ -40,5 +39,6 @@ public class Listing
     public virtual ListingMarketingType ListingMarketingType { get; set; }
     public virtual County County { get; set; }
     public virtual City City { get; set; }
+    public virtual ICollection<ListingPicture> ListingPictures { get; set; }
 
 }

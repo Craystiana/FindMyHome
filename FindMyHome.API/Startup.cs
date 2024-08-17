@@ -54,6 +54,7 @@ public class Startup
         services.AddScoped<IRepository<ListingMarketingType>, Repository<ListingMarketingType>>();
         services.AddScoped<IRepository<Listing>, ListingRepository>();
         services.AddScoped<IRepository<UserListingFavorite>, UserListingFavoriteRepository>();
+        services.AddScoped<IRepository<ListingPicture>, Repository<ListingPicture>>();
 
         // Services
         services.AddScoped<UserService>();

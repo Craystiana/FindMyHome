@@ -13,6 +13,7 @@ public interface IUnitOfWork : IDisposable
     IRepository<ListingMarketingType> ListingMarketingTypeRepository { get; }
     IUserListingFavoriteRepository UserListingFavoriteRepository { get; }
     IListingRepository ListingRepository { get; }
+    IRepository<ListingPicture> ListingPictureRepository { get; }
 
 
     int SaveChanges();
