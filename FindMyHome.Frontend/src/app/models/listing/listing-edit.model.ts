@@ -11,6 +11,7 @@ export class ListingEdit{
     public pictures : string[] | undefined;
     public latitude: number | undefined;
     public longitude: number | undefined;
+    public isClosed: boolean = false;
 
     public constructor(carId: number,
                        listingType: number,
@@ -23,7 +24,8 @@ export class ListingEdit{
                        price : number, 
                        photo : string[] | undefined,
                        latitude: number | undefined,
-                       longitude: number | undefined) {
+                       longitude: number | undefined,
+                       isClosed: boolean = false) {
         this.listingId = carId;                   
         this.listingTypeId = listingType;
         this.listingMarketingTypeId = listingMarketingType;
@@ -36,5 +38,6 @@ export class ListingEdit{
         this.pictures = photo;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.isClosed = isClosed;
     }
 }

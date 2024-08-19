@@ -38,12 +38,27 @@ public class ListingController : BaseController
     {
         try
         {
-            return new JsonResult(_listingService.GetCarData());
+            return new JsonResult(_listingService.GetListingData());
         }
         catch (Exception e)
         {
             _logger.LogError("Unable to fetch car data.\nError:\n" + e);
             return new JsonResult(new ListingDataModel());
+        }
+    }
+
+    [HttpGet]
+    [Route("Edit")]
+    public IActionResult Edit([FromQuery] int listingId)
+    {
+        try
+        {
+            return new JsonResult(_listingService.GetListingEditDetails(listingId));
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Unable to fetch listing details for listing with id " + listingId + ".\nError:\n" + e);
+            return new JsonResult(new ListingEditModel());
         }
     }
 
@@ -66,7 +81,7 @@ public class ListingController : BaseController
         }
         catch (Exception ex)
         {
-            _logger.LogError("Error while adding the car " + ex);
+            _logger.LogError("Error while adding the listing " + ex);
             return new JsonResult(false);
         }
     }
@@ -81,7 +96,7 @@ public class ListingController : BaseController
         }
         catch (Exception ex)
         {
-            _logger.LogError("Error while fetching the car list " + ex);
+            _logger.LogError("Error while fetching the listing list " + ex);
             return new JsonResult(false);
         }
     }
@@ -96,7 +111,7 @@ public class ListingController : BaseController
         }
         catch (Exception ex)
         {
-            _logger.LogError("Error while fetching the car list " + ex);
+            _logger.LogError("Error while fetching the listing list " + ex);
             return new JsonResult(false);
         }
     }
@@ -112,7 +127,7 @@ public class ListingController : BaseController
         }
         catch (Exception ex)
         {
-            _logger.LogError("Unable to delete car with id " + listingId + ".\nError:\n" + ex);
+            _logger.LogError("Unable to delete listing with id " + listingId + ".\nError:\n" + ex);
             return new JsonResult(false);
         }
     }

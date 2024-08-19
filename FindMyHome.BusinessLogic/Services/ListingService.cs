@@ -29,11 +29,38 @@ public class ListingService : BaseService
             Latitude = listing.Latitude,
             Longitude = listing.Longitude,
             Pictures = listing.ListingPictures.Select(c => ConvertToBase64String(c.Picture)).ToList(),
-            IsFavorite = isFavorite != null
+            IsFavorite = isFavorite != null,
+            CanEdit = userId == listing.CreatedByUserId,
+            SellerFirstName = listing.CreatedByUser.FirstName,
+            SellerLastName = listing.CreatedByUser.LastName,
+            SellerPhoneNumber = listing.CreatedByUser.PhoneNumber,
+            SellerEmail = listing.CreatedByUser.Email
         };
     }
 
-    public ListingDataModel GetCarData()
+    public ListingEditModel GetListingEditDetails(int listingId)
+    {
+        var listing = UnitOfWork.ListingRepository.Get(listingId);
+
+        return new ListingEditModel
+        {
+            ListingId = listing.ListingId,
+            Title = listing.Title,
+            Description = listing.Description,
+            Location = listing.Location,
+            ListingTypeId = listing.ListingTypeId,
+            ListingMarketingTypeId = listing.ListingMarketingTypeId,
+            CountyId = listing.CountyId,
+            CityId = listing.CityId,
+            IsClosed = listing.IsClosed,
+            Price = listing.Price,
+            Latitude = listing.Latitude,
+            Longitude = listing.Longitude,
+            Pictures = listing.ListingPictures.Select(c => ConvertToBase64String(c.Picture)).ToList(),
+        };
+    }
+
+    public ListingDataModel GetListingData()
     {
         return new ListingDataModel
         {
@@ -83,8 +110,9 @@ public class ListingService : BaseService
         listing.Price = model.Price;
         listing.Latitude = model.Latitude;
         listing.Longitude = model.Longitude;
+        listing.IsClosed = model.IsClosed;
 
-        if (model.Pictures != null)
+        if (model.Pictures != null && model.Pictures.Count > 0)
         {
             listing.ListingPictures = model.Pictures.Select(p => new ListingPicture
             {

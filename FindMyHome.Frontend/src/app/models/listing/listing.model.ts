@@ -12,4 +12,9 @@ export interface ListingModel {
     latitude: number;
     longitude: number;
     isFavorite: boolean;
+    canEdit: boolean;
+    sellerFirstName: string;
+    sellerLastName: string;
+    sellerPhoneNumber: string;
+    sellerEmail: string;
 }

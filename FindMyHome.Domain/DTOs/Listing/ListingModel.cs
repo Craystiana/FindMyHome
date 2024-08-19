@@ -17,4 +17,9 @@ public class ListingModel
     public List<string> Pictures { get; set; }
     public bool IsFavorite { get; set; } = false;
     public DateTime CreatedOn { get; set; }
+    public bool CanEdit { get; set; } = false;
+    public string? SellerFirstName {  get; set; }
+    public string? SellerLastName { get; set; }
+    public string? SellerPhoneNumber { get; set; }
+    public string? SellerEmail { get; set; }
 }

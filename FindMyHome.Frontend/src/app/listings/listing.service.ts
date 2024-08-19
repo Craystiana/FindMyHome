@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, map, of } from "rxjs";
 import { Injectable } from "@angular/core";
 import { ListingModel } from "../models/listing/listing.model";
-import { API_URL, FAVORITE_ADD, FAVORITE_DELETE, FAVORITE_URL, LISTINGS_OWN_URL, LISTINGS_URL, LISTING_DATA_URL, LISTING_DELETE_URL, LISTING_DETAIL_URL, LISTING_EDIT_URL } from "src/environments/environment";
+import { API_URL, FAVORITE_ADD, FAVORITE_DELETE, FAVORITE_URL, LISTINGS_OWN_URL, LISTINGS_URL, LISTING_DATA_URL, LISTING_DELETE_URL, LISTING_DETAIL_EDIT_URL, LISTING_DETAIL_URL, LISTING_EDIT_URL } from "src/environments/environment";
 import { ListingEdit } from "../models/listing/listing-edit.model";
 import { ListingData } from "../models/listing/listing-data.model";
 import { ListingQuery } from "../models/listing/listing-query.model";
@@ -47,6 +47,14 @@ export class ListingService {
   getListing(id: number): Observable<ListingModel> {
     return this.http.get<ListingModel>(API_URL + LISTING_DETAIL_URL + "?listingId=" + id).pipe(
       map((data: ListingModel) => {
+        return data;
+      })
+    )
+  }
+
+  public getListingEdit(carId : number) {
+    return this.http.get<ListingEdit>(API_URL + LISTING_DETAIL_EDIT_URL + "?listingId=" + carId).pipe(
+      map((data : ListingEdit) => {
         return data;
       })
     )

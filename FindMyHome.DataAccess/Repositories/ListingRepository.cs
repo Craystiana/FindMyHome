@@ -43,6 +43,7 @@ public class ListingRepository : IListingRepository
                             .Include(c => c.City)
                             .Include(c => c.County)
                             .Include(c => c.ListingPictures)
+                            .Include(c => c.CreatedByUser)
                             .FirstOrDefault(c => c.ListingId == listingId);
     }
 

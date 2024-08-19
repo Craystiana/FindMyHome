@@ -18,7 +18,7 @@ export class ListingEditComponent {
   public listingData : ListingData | undefined;
   public isLoading: boolean = false;
   public listingId : number = 0;
-  public listing: ListingModel | undefined;
+  public listing: ListingEdit | undefined;
   public pictures : string[] = [];
   public isPictureLoaded = true;
   public map: google.maps.Map | undefined;
@@ -56,12 +56,14 @@ export class ListingEditComponent {
     );
 
     if(this.listingId !== 0){
-      this.listingService.getListing(this.listingId).pipe(take(1)).subscribe(
+      this.listingService.getListingEdit(this.listingId).pipe(take(1)).subscribe(
         data => {
           this.listing = data;
-          this.latitude = data.latitude;
-          this.longitude = data.longitude;
-          this.setMarker(new google.maps.LatLng(this.latitude, this.longitude));
+          if (data.latitude && data.longitude) {
+            this.latitude = data.latitude;
+            this.longitude = data.longitude;
+            this.setMarker(new google.maps.LatLng(this.latitude, this.longitude));
+          }
         }
       );
     }
@@ -80,7 +82,8 @@ export class ListingEditComponent {
                             editForm.value.price,
                             this.pictures,
                             this.latitude,
-                            this.longitude);               
+                            this.longitude,
+                            editForm.value.isClosed);               
     
     this.listingService.edit(model).pipe(first()).subscribe(
       data =>{
@@ -160,6 +163,8 @@ export class ListingEditComponent {
       map: this.map,
     });
     this.map?.setCenter(location);
+    this.latitude = location.lat();
+    this.longitude = location.lng();
   }
 
   updateSearchResults() {
@@ -183,8 +188,6 @@ export class ListingEditComponent {
   
     this.geocoder.geocode({'placeId': item.place_id}, (results: any, status: any) => {
       if(status === 'OK' && results && results[0]){
-        this.latitude = results[0].geometry.location.lat();
-        this.longitude = results[0].geometry.location.lng();
         this.setMarker(results[0].geometry.location);
       }
     })
