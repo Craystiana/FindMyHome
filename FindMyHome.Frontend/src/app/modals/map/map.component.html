@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar color="primary" >
+    <ion-buttons slot="start">
+      <ion-button (click)="cancelChanges()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirmChanges()">Done</ion-button>
+    </ion-buttons>
+    <ion-searchbar *ngIf="showSearch" mode="ios" animated color="dark" placeholder="Cauta locatie" style="padding: inherit;" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-list [hidden]="autocompleteItems.length === 0">
+  <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)" color="transparent">
+    {{ item.description }}
+  </ion-item>
+</ion-list>
+
+<ion-content>
+  <div id='map'></div>
+</ion-content>

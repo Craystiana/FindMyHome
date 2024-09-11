@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ListingRoutingModule } from './listing-routing.module';
 import { ListingOverviewComponent } from './listing-overview/listing-overview.component';
+import { SelectModalComponent } from '../modals/select-modal/select-modal.component';
+import { MapComponent } from '../modals/map/map.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -13,6 +15,6 @@ import { ListingOverviewComponent } from './listing-overview/listing-overview.co
     IonicModule,
     ListingRoutingModule
   ],
-  declarations: [ListingOverviewComponent]
+  declarations: [ListingOverviewComponent, SelectModalComponent]
 })
 export class ListingModule {}

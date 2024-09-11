@@ -86,6 +86,7 @@ public class ListingService : BaseService
             Latitude = model.Latitude,
             Longitude = model.Longitude,
             CreatedByUserId = userId,
+            CreatedOn = new DateTime(),
             ListingPictures = model.Pictures.Select(p => new ListingPicture
             {
                 Picture = ConvertToByteArray(p)
@@ -111,6 +112,7 @@ public class ListingService : BaseService
         listing.Latitude = model.Latitude;
         listing.Longitude = model.Longitude;
         listing.IsClosed = model.IsClosed;
+        listing.UpdatedOn = new DateTime();
 
         if (model.Pictures != null && model.Pictures.Count > 0)
         {

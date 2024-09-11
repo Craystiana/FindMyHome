@@ -3,10 +3,6 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/listing"></ion-back-button>
     </ion-buttons>
-    
-    <ion-title *ngIf="listing !== undefined">
-      Detalii oferta - {{listing.listingType}}
-    </ion-title>
 
     <ion-button *ngIf="listing && !listing.isFavorite" slot="end" color="dark" shape="round" title="Add to favorites" (click)="addToFavorites()"> 
       <ion-icon name="star-outline" color="warning"></ion-icon>
@@ -38,7 +34,6 @@
             </swiper-slide>
           </swiper-container>
           <ion-card-header class="ion-text-center">
-            <ion-card-subtitle>{{listing.listingType}}</ion-card-subtitle>
             <ion-card-title>
               <ion-item lines="none">
                 <ion-label>{{listing.title}}</ion-label>
@@ -47,54 +42,59 @@
           </ion-card-header>
       
           <ion-card-content>
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent">
               <ion-icon name="home-outline" slot="start" color="primary"></ion-icon>
               <ion-label>Tip: {{listing.listingType}}</ion-label>
             </ion-item>
 
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent">
               <ion-icon name="newspaper-outline" slot="start"></ion-icon>
               <ion-label>Tip marketing: {{listing.listingMarketingType}}</ion-label>
             </ion-item>
       
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent">
               <ion-icon name="image-outline" slot="start"></ion-icon>
               <ion-label>Judet: {{listing.county}}</ion-label>
             </ion-item>
       
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent">
               <ion-icon name="business-outline" slot="start"></ion-icon>
               <ion-label>Oras: {{listing.city}}</ion-label>
             </ion-item>
+
+            <ion-item lines="none" color="transparent">
+              <ion-icon name="location-outline" slot="start"></ion-icon>
+              <ion-label>Locatie: {{listing.location}}</ion-label>
+            </ion-item>
       
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent">
               <ion-icon name="calendar-outline" slot="start"></ion-icon>
               <ion-label>Data adaugare: 14-05-2023</ion-label>
             </ion-item>
       
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent">
               <ion-icon name="cash-outline" slot="start" color="success"></ion-icon>
-              <ion-label>Pret: {{listing.price}} RON</ion-label>
+              <ion-label>Pret: {{listing.price}} €</ion-label>
             </ion-item>
 
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent">
               <ion-label>Descriere: {{listing.description}}</ion-label>
             </ion-item>
              
-            <ion-item lines="none"><ion-label>Contact vanzator</ion-label></ion-item>
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent"><ion-label>Contact vanzator</ion-label></ion-item>
+            <ion-item lines="none" color="transparent">
               <ion-chip>
                 <ion-icon name="person-outline" color="primary"></ion-icon>
                 <ion-label>Nume: {{listing.sellerFirstName}} {{listing.sellerLastName}}</ion-label>
               </ion-chip>
             </ion-item>
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent">
               <ion-chip>
                 <ion-icon name="call-outline" color="primary"></ion-icon>
                 <ion-label>Contact: {{listing.sellerPhoneNumber}}</ion-label>
               </ion-chip>
             </ion-item>
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent">
               <ion-chip>
                 <ion-icon name="mail-outline" color="primary"></ion-icon>
                 <ion-label>Email: {{listing.sellerEmail}}</ion-label>
@@ -106,5 +106,23 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <div id='map'></div>
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button id="open-map">
+      <ion-icon name="location-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 </ion-content>
+
+<ion-modal trigger="open-map" #modal>
+<ng-template>
+  <app-map
+    class="ion-page"
+    [showSearch]="false"
+    [latitude]="listing?.latitude"
+    [longitude]="listing?.longitude"
+    (selectionChange)="modal.dismiss()"
+    (selectionCancel)="modal.dismiss()"
+  ></app-map>
+</ng-template>
+</ion-modal>

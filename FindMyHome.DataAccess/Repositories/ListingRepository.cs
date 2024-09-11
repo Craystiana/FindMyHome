@@ -68,7 +68,8 @@ public class ListingRepository : IListingRepository
                                              .Include(c => c.ListingMarketingType)
                                              .Include(c => c.County)
                                              .Include(c => c.City)
-                                             .Include(c => c.ListingPictures);
+                                             .Include(c => c.ListingPictures)
+                                             .Where(c => !c.IsClosed);
 
         if (!string.IsNullOrEmpty(search))
         {

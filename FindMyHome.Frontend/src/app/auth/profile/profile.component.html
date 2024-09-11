@@ -22,22 +22,22 @@
             </ion-card-header>    
 
             <ion-card-content>
-              <ion-item class="item-content">
+              <ion-item class="item-content" color="transparent">
                 <ion-label position="floating">Nume</ion-label>
                 <ion-input type="firstName" [ngModel]="this.profile.firstName" name="firstName" required #firstNameCtrl="ngModel"></ion-input>
               </ion-item>
 
-              <ion-item class="item-content">
+              <ion-item class="item-content" color="transparent">
                 <ion-label position="floating">Prenume</ion-label>
                 <ion-input type="lastName" [ngModel]="this.profile.lastName" name="lastName" required #lastNameCtrl="ngModel"></ion-input>
               </ion-item>
 
-              <ion-item class="item-content">
+              <ion-item class="item-content" color="transparent">
                 <ion-label position="floating">Adresa email</ion-label>
                 <ion-input type="email" [ngModel]="this.profile.email" name="email" required #emailAddressCtrl="ngModel"></ion-input>
               </ion-item>
 
-              <ion-item>
+              <ion-item color="transparent">
                 <ion-label position="floating">Numar telefon</ion-label>
                 <ion-input type="phoneNumber" [ngModel]="this.profile.phoneNumber" name="phoneNumber" #phoneCtrl="ngModel" minlength="7"
                   clearOnEdit="false"> </ion-input>

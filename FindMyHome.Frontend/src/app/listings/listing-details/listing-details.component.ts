@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { IonModal, LoadingController, ToastController } from '@ionic/angular';
 import { ListingModel } from 'src/app/models/listing/listing.model';
 import { ListingService } from '../listing.service';
 import { take } from 'rxjs';
@@ -14,7 +14,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class ListingDetailsComponent implements OnInit {
   public listing: ListingModel | undefined;
   private listingId: number | undefined;
-  public map: google.maps.Map | undefined;
+  @ViewChild('modal', { static: true }) modal!: IonModal;
 
   constructor(private route: ActivatedRoute,
               private loadingController: LoadingController,
@@ -49,24 +49,7 @@ export class ListingDetailsComponent implements OnInit {
       .subscribe(data => {
         this.listing = data;
         loading.dismiss();
-        this.createMap();
       })
-    }
-  }
-
-  async createMap() {
-    if (this.listing?.latitude && this.listing.longitude) {
-      var mapElement = document.getElementById('map') as HTMLElement;
-      var location = new google.maps.LatLng(this.listing?.latitude, this.listing?.longitude);
-      this.map = new google.maps.Map(mapElement, {
-        center: location,
-        zoom: 15,
-      });
-
-      new google.maps.Marker({
-        position: location,
-        map: this.map,
-      });
     }
   }
 

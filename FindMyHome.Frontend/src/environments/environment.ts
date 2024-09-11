@@ -6,7 +6,7 @@ export const environment = {
   production: false
 };
 
-export const API_URL = 'https://localhost:44362/api';
+export const API_URL = 'https://asp-findmyhome.azurewebsites.net/api';
 export const LOGIN_URL = '/user/login'; 
 export const REGISTER_URL = '/user/register';
 export const PROFILE_URL = '/user/profile';

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { ListingModel } from 'src/app/models/listing/listing.model';
 import { first, take } from 'rxjs';
 import { ListingData } from 'src/app/models/listing/listing-data.model';
 import { Router } from '@angular/router';
 import { ListingQuery } from 'src/app/models/listing/listing-query.model';
-import { ToastController } from '@ionic/angular';
+import { IonModal, ToastController } from '@ionic/angular';
 import { SortType } from 'src/app/common/sort-type';
+import { Generic } from 'src/app/models/generic/generic.model';
 
 @Component({
   selector: 'app-listing-overview',
@@ -20,8 +21,44 @@ export class ListingOverviewComponent implements OnInit {
   public listingCounty: number[] = [];
   public listingCity: number[] = [];
   public listingMarketingType: number[] = [];
-  public sortBy: number = 0;
+  public sortBy: number[] = [];
   public listingData: ListingData = new ListingData();
+  public sorting: Generic[] = [{id: this.sortType.Title, name: 'Titlu'}, {id: this.sortType.Price, name: 'Pret'}, {id: this.sortType.CreationDate, name: 'Data'}]
+  @ViewChild('typemodal', { static: true }) typemodal!: IonModal;
+  @ViewChild('marketingModal', { static: true }) marketingModal!: IonModal;
+  @ViewChild('countymodal', { static: true }) countymodal!: IonModal;
+  @ViewChild('citymodal', { static: true }) citymodal!: IonModal;
+  @ViewChild('sortmodal', { static: true }) sortmodal!: IonModal;
+
+  typeSelectionChanged(listingTypes: any) {
+    this.listingType = listingTypes as number[];
+    this.typemodal.dismiss();
+    this.getListings()
+  }
+
+  marketingTypeSelectionChanged(listingMarketingTypes: any) {
+    this.listingMarketingType = listingMarketingTypes as number[];
+    this.marketingModal.dismiss();
+    this.getListings()
+  }
+
+  countiesSelectionChanged(counties: any) {
+    this.listingCounty = counties as number[];
+    this.countymodal.dismiss();
+    this.getListings()
+  }
+
+  citiesSelectionChanged(cities: any) {
+    this.listingCity = cities as number[];
+    this.citymodal.dismiss();
+    this.getListings()
+  }
+
+  sortSelectionChanged(sort: any) {
+    this.sortBy = sort as number[];
+    this.sortmodal.dismiss();
+    this.getListings()
+  }
 
   public get sortType() : typeof SortType{
     return SortType;
@@ -55,7 +92,7 @@ export class ListingOverviewComponent implements OnInit {
                              this.listingMarketingType,
                              this.listingCity,
                              this.listingCounty,
-                             this.sortBy,
+                             this.sortBy[0],
                              this.searchTerm);
 
     this.listingService.getListings(model).pipe(first()).subscribe(

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">FindMyHome</string>
+    <string name="title_activity_main">FindMyHome</string>
+    <string name="package_name">com.findmyhome.app</string>
+    <string name="custom_url_scheme">com.findmyhome.app</string>
+</resources>

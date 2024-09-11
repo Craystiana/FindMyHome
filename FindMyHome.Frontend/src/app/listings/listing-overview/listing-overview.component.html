@@ -3,15 +3,15 @@
     <ion-grid class="ion-no-padding">
       <ion-row>
         <ion-col size-lg="2" size-sm="0">
-          <ion-title style="height: 100%;">Oferte</ion-title>
+          <ion-title style="height: 100%;">Anunturi</ion-title>
         </ion-col>
         
-        <ion-col offset-lg="2" size-lg="4" size-sm="1">
+        <ion-col offset-lg="2" size-lg="3" size-sm="1">
           <ion-searchbar mode="ios"
                          debounce="500"
                          animated
                          color="dark"
-                         placeholder="Cauta oferte"
+                         placeholder="Cauta anunturi"
                          style="padding: inherit;"
                          [(ngModel)]="searchTerm"
                          (ionChange)="getListings()"></ion-searchbar>
@@ -32,68 +32,23 @@
 
 <ion-content *ngIf="listings !== undefined">
   <ion-toolbar>
-    <ion-select placeholder="Tip"
-                okText="Save"
-                cancelText="Clear"
-                slot="start"
-                multiple
-                class="ion-padding"
-                mode="ios"
-                name="Listing Type"
-                [(ngModel)]="listingType"
-                (ionChange)="getListings()">
-      <ion-select-option *ngFor="let listingType of listingData.listingTypes" [value]="listingType.id">{{listingType.name}}</ion-select-option>
-    </ion-select>
-
-    <ion-select placeholder="Oferta"
-                okText="Save"
-                cancelText="Clear"
-                slot="start"
-                multiple
-                class="ion-padding"
-                mode="ios"
-                name="Marketing Type"
-                [(ngModel)]="listingMarketingType"
-                (ionChange)="getListings()">
-      <ion-select-option *ngFor="let listingMarketingType of listingData.listingMarketingTypes" [value]="listingMarketingType.id">{{listingMarketingType.name}}</ion-select-option>
-    </ion-select>
-
-    <ion-select placeholder="Judet"
-                okText="Save"
-                cancelText="Clear"
-                slot="start"
-                multiple
-                class="ion-padding"
-                mode="ios"
-                [(ngModel)]="listingCounty"
-                (ionChange)="getListings()">
-      <ion-select-option *ngFor="let listingCounty of listingData.counties" [value]="listingCounty.id">{{listingCounty.name}}</ion-select-option>
-    </ion-select>
-
-    <ion-select placeholder="Oras" 
-                okText="Save" 
-                cancelText="Clear" 
-                slot="start" 
-                multiple 
-                class="ion-padding"
-                mode="ios" 
-                [(ngModel)]="listingCity" 
-                (ionChange)="getListings()">
-      <ion-select-option *ngFor="let listingCity of listingData.cities" [value]="listingCity.id">{{listingCity.name}}</ion-select-option>
-    </ion-select>
-
-    <ion-select placeholder="Sortare"
-                okText="Save"
-                cancelText="Clear"
-                slot="end"
-                class="ion-padding"
-                mode="ios"
-                [(ngModel)]="sortBy" 
-                (ionChange)="getListings()">
-      <ion-select-option [value]="sortType.Title">Title</ion-select-option>
-      <ion-select-option [value]="sortType.Price">Price</ion-select-option>
-      <ion-select-option [value]="sortType.CreationDate">Creation Date</ion-select-option>
-    </ion-select>
+    <ion-segment [scrollable]="true" value="all">
+      <ion-segment-button value="listingType" id="listing-type">
+        <ion-label>Tip</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="listingMarketingType" id="listing-marketing-type">
+        <ion-label>Oferta</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="county" id="county">
+        <ion-label>Judet</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="city" id="city">
+        <ion-label>Oras</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="sort" id="sort">
+        <ion-label>Sortare</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 
   <ion-grid>
@@ -101,7 +56,7 @@
       <ion-col size-lg="3" 
                *ngFor="let listing of listings">
         <ion-card [routerLink]="['/listing/detail']" [queryParams]="{listingId : listing.listingId}">
-          <swiper-container *ngIf="listing.pictures">
+          <swiper-container *ngIf="listing.pictures" style="height: 250px;">
             <swiper-slide *ngFor="let picture of listing.pictures">
               <img [src]="'data:image/jpg;base64,' + picture"
                style="width: 100%; max-height: 500px;"/>
@@ -118,9 +73,9 @@
               <ion-label>{{listing.description}}</ion-label>
             </ion-item>
       
-            <ion-item lines="none">
+            <ion-item lines="none" color="transparent">
               <ion-icon name="cash-outline" slot="start" color="success"></ion-icon> 
-              <ion-label>{{listing.price}} RON</ion-label>
+              <ion-label>{{listing.price}} €</ion-label>
               <ion-icon *ngIf="listing.isFavorite" name="star" slot="end" color="warning"></ion-icon>
             </ion-item>
           </ion-card-content>
@@ -128,6 +83,69 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-     
-
 </ion-content>
+
+<ion-modal trigger="listing-type" #typemodal>
+  <ng-template>
+    <app-select-modal
+      class="ion-page"
+      title="Tip anunt"
+      [items]="listingData.listingTypes"
+      [selectedItems]="listingType"
+      (selectionChange)="typeSelectionChanged($event)"
+      (selectionCancel)="typemodal.dismiss()"
+    ></app-select-modal>
+  </ng-template>
+</ion-modal>
+
+<ion-modal trigger="listing-marketing-type" #marketingmodal>
+  <ng-template>
+    <app-select-modal
+      class="ion-page"
+      title="Tip oferta"
+      [items]="listingData.listingMarketingTypes"
+      [selectedItems]="listingMarketingType"
+      (selectionChange)="marketingTypeSelectionChanged($event)"
+      (selectionCancel)="marketingmodal.dismiss()"
+    ></app-select-modal>
+  </ng-template>
+</ion-modal>
+
+<ion-modal trigger="county" #countymodal>
+  <ng-template>
+    <app-select-modal
+      class="ion-page"
+      title="Judet"
+      [items]="listingData.counties"
+      [selectedItems]="listingCounty"
+      (selectionChange)="countiesSelectionChanged($event)"
+      (selectionCancel)="countymodal.dismiss()"
+    ></app-select-modal>
+  </ng-template>
+</ion-modal>
+
+<ion-modal trigger="city" #citymodal>
+  <ng-template>
+    <app-select-modal
+      class="ion-page"
+      title="Oras"
+      [items]="listingData.cities"
+      [selectedItems]="listingCity"
+      (selectionChange)="citiesSelectionChanged($event)"
+      (selectionCancel)="citymodal.dismiss()"
+    ></app-select-modal>
+  </ng-template>
+</ion-modal>
+
+<ion-modal trigger="sort" #sortmodal>
+  <ng-template>
+    <app-select-modal
+      class="ion-page"
+      title="Sortare"
+      [items]="sorting"
+      [selectedItems]="sortBy"
+      (selectionChange)="sortSelectionChanged($event)"
+      (selectionCancel)="sortmodal.dismiss()"
+    ></app-select-modal>
+  </ng-template>
+</ion-modal>

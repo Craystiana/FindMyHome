@@ -16,13 +16,13 @@
             <ion-card-header class="ion-text-center">
               <ion-card-title>
                 <ion-icon name="home-sharp" color="primary"></ion-icon>
-                {{listingId > 0 ? 'Editare oferta' : 'Adaugare oferta'}}
+                {{listingId > 0 ? 'Editare anunt' : 'Adaugare anunt'}}
                 <ion-icon name="home-sharp" color="primary"></ion-icon>
               </ion-card-title>
             </ion-card-header>
 
             <ion-card-content>
-            <ion-item class="item-content">
+            <ion-item class="item-content" color="transparent">
               <ion-label position="floating">Titlu oferta</ion-label>
               <ion-input type="text" [ngModel]="this.listing?.title" name="title" required #nameCtrl="ngModel"></ion-input>
             </ion-item>
@@ -30,43 +30,43 @@
               <ion-label color="danger">Titlu oferta este un camp obligatoriu</ion-label>
             </ion-item>
 
-            <ion-item>
+            <ion-item color="transparent">
               <ion-label position="floating">Tip oferta</ion-label>
               <ion-select [ngModel]="this.listing?.listingTypeId" required name="listingType" mode="ios">
                 <ion-select-option *ngFor="let listingType of listingData.listingTypes" [value]="listingType.id">{{listingType.name}}</ion-select-option>
               </ion-select>
             </ion-item>
 
-            <ion-item>
+            <ion-item color="transparent">
               <ion-label position="floating">Tip marketing oferta</ion-label>
               <ion-select [ngModel]="this.listing?.listingMarketingTypeId" required name="listingMarketingType" mode="ios">
                 <ion-select-option *ngFor="let listingMarketingType of listingData.listingMarketingTypes" [value]="listingMarketingType.id">{{listingMarketingType.name}}</ion-select-option>
               </ion-select>
             </ion-item>
 
-            <ion-item>
+            <ion-item color="transparent">
               <ion-label position="floating">Judet oferta</ion-label>
               <ion-select [ngModel]="this.listing?.countyId" required name="county" mode="ios">
                 <ion-select-option *ngFor="let listingCounty of listingData.counties" [value]="listingCounty.id">{{listingCounty.name}}</ion-select-option>
               </ion-select>
             </ion-item>
 
-            <ion-item>
+            <ion-item color="transparent">
               <ion-label position="floating">Oras oferta</ion-label>
               <ion-select [ngModel]="this.listing?.cityId" required name="city" mode="ios">
                 <ion-select-option *ngFor="let listingCity of listingData.cities" [value]="listingCity.id">{{listingCity.name}}</ion-select-option>
               </ion-select>
             </ion-item>
 
-            <ion-item class="item-content">
+            <ion-item class="item-content" color="transparent">
               <ion-label position="floating">Descriere</ion-label>
               <ion-input type="text" [ngModel]="this.listing?.description" name="description" required #descriptionCtrl="ngModel"></ion-input>
             </ion-item>
-            <ion-item *ngIf="descriptionCtrl.touched && !descriptionCtrl.valid" lines="none">
+            <ion-item *ngIf="descriptionCtrl.touched && !descriptionCtrl.valid" lines="none" color="transparent">
               <ion-label color="danger">Please input the description of the listing</ion-label>
             </ion-item>
 
-            <ion-item class="item-content">
+            <ion-item class="item-content" color="transparent">
               <ion-label position="floating">Locatie</ion-label>
               <ion-input type="text" [ngModel]="this.listing?.location" name="location" required #locationCtrl="ngModel"></ion-input>
             </ion-item>
@@ -74,7 +74,7 @@
               <ion-label color="danger">Please input the location of the listing</ion-label>
             </ion-item>
 
-            <ion-item class="item-content">
+            <ion-item class="item-content" color="transparent">
               <ion-label position="floating">Pret</ion-label>
               <ion-input type="number" [ngModel]="this.listing?.price" name="price" required #priceCtrl="ngModel"></ion-input>
             </ion-item>
@@ -82,12 +82,12 @@
               <ion-label color="danger">Please enter the price of the listing</ion-label>
             </ion-item>
 
-            <ion-item *ngIf="listingId > 0">
+            <ion-item *ngIf="listingId > 0" color="transparent">
               <ion-label position="floating">Inchidere anunt</ion-label>
               <ion-toggle [ngModel]="this.listing?.isClosed" name="isClosed" #isClosedCtrl="ngModel"></ion-toggle>
             </ion-item>
 
-            <ion-item class="item-content">
+            <ion-item class="item-content" color="transparent">
               <ion-label position="stacked">Imagine</ion-label>
               <ion-input multiple type="file" ngModel name="photo" (change)="onDocumentUpload($event)"></ion-input>
             </ion-item>
@@ -101,15 +101,23 @@
       </ion-row>
     </ion-grid>
   </form>
-  <ion-header>
-    <ion-toolbar color="primary">
-      <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place"></ion-searchbar>
-    </ion-toolbar>
-  </ion-header>
-  <ion-list [hidden]="autocompleteItems.length === 0">
-    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-      {{ item.description }}
-    </ion-item>
-  </ion-list>
-  <div id='map'></div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button id="open-map">
+        <ion-icon name="location-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
+
+<ion-modal trigger="open-map" #modal>
+  <ng-template>
+    <app-map
+      class="ion-page"
+      [showSearch]="true"
+      [latitude]="latitude"
+      [longitude]="longitude"
+      (selectionChange)="locationChanged($event)"
+      (selectionCancel)="modal.dismiss()"
+    ></app-map>
+  </ng-template>
+</ion-modal>

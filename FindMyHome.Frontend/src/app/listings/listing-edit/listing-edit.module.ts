@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ListingEditComponent } from './listing-edit.component';
 import { ListingEditRoutingModule } from './listing-edit-routing.module';
+import { MapModule } from 'src/app/modals/map/map.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -11,7 +12,8 @@ import { ListingEditRoutingModule } from './listing-edit-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    ListingEditRoutingModule
+    ListingEditRoutingModule,
+    MapModule
   ],
   declarations: [ListingEditComponent]
 })
